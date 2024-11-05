@@ -57,9 +57,9 @@ public class VentanaLogin extends JFrame {
 		
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5); // Espacio alrededor de los componentes
+        gbc.insets = new Insets(5, 5, 5, 5); 
 
-        // Etiqueta y campo de texto para Usuario
+       
         gbc.gridx = 0;
         gbc.gridy = 0;
         contentPane.add(new JLabel("Usuario:"), gbc);
@@ -68,7 +68,7 @@ public class VentanaLogin extends JFrame {
         JTextField usuarioField = new JTextField(15);
         contentPane.add(usuarioField, gbc);
 
-        // Etiqueta y campo de texto para Contraseña
+       
         gbc.gridx = 0;
         gbc.gridy = 1;
         contentPane.add(new JLabel("Contraseña:"), gbc);
@@ -77,7 +77,7 @@ public class VentanaLogin extends JFrame {
         JPasswordField passwordField = new JPasswordField(15);
         contentPane.add(passwordField, gbc);
 
-        // Botón de Iniciar Sesión
+       
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
@@ -112,7 +112,7 @@ public class VentanaLogin extends JFrame {
         });
 
 
-        // Botón de Registro
+        
         gbc.gridy = 3;
         JButton registerButton = new JButton("Registrarse");
         contentPane.add(registerButton, gbc);
@@ -124,12 +124,12 @@ public class VentanaLogin extends JFrame {
                 VentanaRegistro ventanaRegistro = new VentanaRegistro();
                 ventanaRegistro.setVisible(true);
                 
-                // Cerrar la ventana de login
+               
                 dispose();
             }
         });
 
-        // Establecer el contentPane como el panel principal
+        
         setContentPane(contentPane);
         
         

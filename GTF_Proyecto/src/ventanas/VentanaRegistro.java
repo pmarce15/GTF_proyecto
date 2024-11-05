@@ -38,9 +38,9 @@ public class VentanaRegistro extends JFrame {
 		
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5); // Espacio alrededor de los componentes
+        gbc.insets = new Insets(5, 5, 5, 5); 
 
-        // Etiqueta y campo de texto para Usuario
+       
         gbc.gridx = 0;
         gbc.gridy = 0;
         contentPane.add(new JLabel("Usuario:"), gbc);
@@ -49,7 +49,7 @@ public class VentanaRegistro extends JFrame {
         JTextField usuarioField = new JTextField(15);
         contentPane.add(usuarioField, gbc);
 
-        // Etiqueta y campo de texto para Contraseña
+        
         gbc.gridx = 0;
         gbc.gridy = 1;
         contentPane.add(new JLabel("Contraseña:"), gbc);
@@ -59,7 +59,7 @@ public class VentanaRegistro extends JFrame {
         contentPane.add(passwordField, gbc);
 
 
-        // Botón de Registro
+        
         gbc.gridy = 3;
         JButton registerButton = new JButton("Registrarse");
         contentPane.add(registerButton, gbc);
@@ -87,7 +87,7 @@ public class VentanaRegistro extends JFrame {
             }
         });
 
-        // Establecer el contentPane como el panel principal
+        
         setContentPane(contentPane);
     }
 		
