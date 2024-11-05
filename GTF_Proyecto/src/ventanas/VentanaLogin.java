@@ -5,10 +5,13 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -82,6 +85,13 @@ public class VentanaLogin extends JFrame {
         JButton loginButton = new JButton("Iniciar Sesión");
         contentPane.add(loginButton, gbc);
         
+//        gbc.gridx = 5;
+//        gbc.gridy = 5;
+        setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
+        setTitle("Inicio Sesión GTF");
+//        JLabel labelLogo = new JLabel(iconLogo);
+//        contentPane.add(labelLogo, gbc);
+        
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,5 +138,5 @@ public class VentanaLogin extends JFrame {
     }
 		
 		
-	}
+	} 
 
