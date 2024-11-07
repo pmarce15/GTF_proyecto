@@ -116,8 +116,8 @@ public class VentanaPrincipal extends JFrame {
             lblModoJuego.setFont(font);
             
             // Efectos visuales
-            lblTitulo.setForeground(Color.WHITE);  // Color del texto
-            lblTitulo.setOpaque(false);            // No necesita fondo
+            lblTitulo.setForeground(Color.WHITE);  
+            lblTitulo.setOpaque(false);            
             lblTitulo.setBackground(new Color(0, 0, 0, 0)); 
             
             lblTitulo.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
@@ -196,12 +196,34 @@ public class VentanaPrincipal extends JFrame {
                 dispose(); 
             }
         });
+        
+        btnHistorial.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				VentanaHistorial ventanaHistorial = new VentanaHistorial();
+				ventanaHistorial.setVisible(true);
+				dispose();				
+			}
+		});
+        
+        btnBiblioteca.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				VentanaBiblioteca ventanaBiblioteca = new VentanaBiblioteca();
+				ventanaBiblioteca.setVisible(true);
+				dispose();
+			}
+		});
        
         
         
     }
 
-    public class BackgroundPanel extends JPanel {
+    private class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
         public BackgroundPanel(String imagePath) {
