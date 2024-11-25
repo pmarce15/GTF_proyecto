@@ -14,7 +14,7 @@ public class VentanaPrincipal extends JFrame {
     private JPanel contentPane2;
     private JPanel contentPane3;
     private JButton btnJugar;
-    private JButton btnCerrarSesion;
+    private JButton btnBiblioteca;
     private JButton btnAjustes;
     private JButton btnHistorial;
     private JLabel lblDificultad;
@@ -79,7 +79,7 @@ public class VentanaPrincipal extends JFrame {
      
 
         btnJugar = new JButton("Jugar");
-        btnCerrarSesion = new JButton("Biblioteca");
+        btnBiblioteca = new JButton("Biblioteca");
         btnAjustes = new JButton("Ajustes"); 
         btnHistorial = new JButton("Historial");
         lblDificultad = new JLabel("Dificultad");
@@ -169,7 +169,7 @@ public class VentanaPrincipal extends JFrame {
 
        
         gbcButton.gridx = 1; 
-        contentPane1.add(btnCerrarSesion, gbcButton);
+        contentPane1.add(btnBiblioteca, gbcButton);
         
         gbcButton.gridx = 0; 
         gbcButton.gridy = 1;
@@ -190,7 +190,16 @@ public class VentanaPrincipal extends JFrame {
             }
         });
         
-
+        btnBiblioteca.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				VentanaBiblioteca ventanaBiblioteca = new VentanaBiblioteca();
+				ventanaBiblioteca.setVisible(true);
+				dispose();
+			}
+		});
         
         btnHistorial.addActionListener(new ActionListener() {
 			
@@ -208,8 +217,8 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaBiblioteca ventanaBiblioteca = new VentanaBiblioteca();
-				ventanaBiblioteca.setVisible(true);
+				VentanaAjustes ventanaAjustes = new VentanaAjustes();
+				ventanaAjustes.setVisible(true);
 				dispose();
 			}
 		});
@@ -218,7 +227,7 @@ public class VentanaPrincipal extends JFrame {
         
     }
 
-    private class BackgroundPanel extends JPanel {
+    public class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
         public BackgroundPanel(String imagePath) {
