@@ -54,4 +54,23 @@ public class daoUsuario {
 	            return false; 
 	        }
 	    }
+	  
+	  public boolean actualizarUsuario (int idUsuario, String nuevoNombre){
+		  PreparedStatement ps = null;
+		  
+		  try {
+			ps = cx.conectar().prepareStatement("UPDATE usuarios SET usuario = ? WHERE id_usuario = ?");
+			ps.setString(1, nuevoNombre);
+			ps.setInt(2, idUsuario);
+			
+			int rowsAffected = ps.executeUpdate();
+			cx.desconectar();
+			
+			return rowsAffected > 0; // si se actualiza al menos una fila, devuelve true
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	  }
 	}

@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,7 +49,28 @@ public class VentanaHistorial extends JFrame {
         gbc1.insets = new Insets(50, 50, 50, 50);
         backgroundPanel.add(contentPane1, gbc1);
         
+        GridBagConstraints gbcButton = new GridBagConstraints();
+        gbcButton.fill = GridBagConstraints.NONE; 
+        gbcButton.insets = new Insets(0, 0, 10, 5); 
         
+        botonAtras = new JButton("Atras");  //EDITAR PARA PONER FLECHA HACIA ATRAS
+        
+        gbcButton.gridx = 0; 
+        gbcButton.gridy = 0;
+        gbcButton.anchor = GridBagConstraints.NORTHWEST;
+        backgroundPanel.add(botonAtras, gbcButton);
+        
+        
+        botonAtras.addActionListener(new ActionListener() {
+        	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				VentanaPrincipal vp = new VentanaPrincipal();
+				vp.setVisible(true);
+				dispose();
+			}
+		});
         
         
 	}

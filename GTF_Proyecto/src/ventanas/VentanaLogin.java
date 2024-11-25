@@ -132,5 +132,7 @@ public class VentanaLogin extends JFrame {
                 dispose();
             }
         });
+        
+        
     }
 }
