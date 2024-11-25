@@ -1,5 +1,6 @@
 package ventanas;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -9,13 +10,18 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
+import clases.Paises;
 import dao.daoUsuario;
 import modelo.Usuarios;
 import ventanas.VentanaHistorial.BackgroundPanel;
@@ -36,6 +42,8 @@ public class VentanaBiblioteca extends JFrame {
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página Historial GTF");
+        
+        inicializarComponentes();
         
         BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
         backgroundPanel.setLayout(new GridBagLayout());
@@ -124,6 +132,50 @@ public class VentanaBiblioteca extends JFrame {
         
 	}
 	
+	   private void inicializarComponentes() {
+	        // Crear un modelo de tabla personalizado
+	        DefaultTableModel modeloTabla = new DefaultTableModel() {
+	            @Override
+	            public boolean isCellEditable(int row, int column) {
+	                return false; // Hacer que las celdas no sean editables
+	            }
+
+	            @Override
+	            public Class<?> getColumnClass(int column) {
+	                // Definir la clase de cada columna
+	                if (column == 1) {
+	                    return ImageIcon.class; // Segunda columna será para imágenes
+	                }
+	                return String.class; // Primera columna será texto
+	            }
+	        };
+
+	        // Agregar columnas al modelo
+	        modeloTabla.addColumn("Nombre del País");
+	        modeloTabla.addColumn("Imagen");
+
+	        // Cargar datos de países desde la clase Paises
+	        Paises paises = new Paises();
+	        paises.cargarPaises("src/imagenes/Paises_Nivel_1.txt"); // Ruta del archivo
+	        HashMap<String, String> paisesMap = paises.getmapaPaises();
+
+	        // Rellenar la tabla con datos del HashMap
+	        for (String nombrePais : paisesMap.keySet()) {
+	            String rutaImagen = paisesMap.get(nombrePais);
+	            ImageIcon icono = new ImageIcon(getClass().getClassLoader().getResource(rutaImagen)); // Cargar imagen
+	            modeloTabla.addRow(new Object[]{nombrePais, icono}); // Agregar fila con el nombre y la imagen
+	        }
+
+	        // Crear la JTable con el modelo
+	        JTable tablaPaises = new JTable(modeloTabla);
+
+	        // Ajustar la altura de las filas para que las imágenes se muestren correctamente
+	        tablaPaises.setRowHeight(100);
+
+	        // Configurar la tabla en un JScrollPane
+	        JScrollPane scrollPane = new JScrollPane(tablaPaises);
+	        add(scrollPane, BorderLayout.CENTER);
+	    }
 	
 	
 	public class BackgroundPanel extends JPanel {
