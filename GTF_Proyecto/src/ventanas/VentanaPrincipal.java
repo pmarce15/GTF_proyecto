@@ -15,7 +15,7 @@ public class VentanaPrincipal extends JFrame {
     private JPanel contentPane3;
     private JButton btnJugar;
     private JButton btnCerrarSesion;
-    private JButton btnBiblioteca;
+    private JButton btnAjustes;
     private JButton btnHistorial;
     private JLabel lblDificultad;
     private JLabel lblModoJuego;
@@ -79,8 +79,8 @@ public class VentanaPrincipal extends JFrame {
      
 
         btnJugar = new JButton("Jugar");
-        btnCerrarSesion = new JButton("Cerrar Sesión");
-        btnBiblioteca = new JButton("Biblioteca");
+        btnCerrarSesion = new JButton("Biblioteca");
+        btnAjustes = new JButton("Ajustes"); 
         btnHistorial = new JButton("Historial");
         lblDificultad = new JLabel("Dificultad");
         lblModoJuego = new JLabel("Modo de Juego");
@@ -173,7 +173,7 @@ public class VentanaPrincipal extends JFrame {
         
         gbcButton.gridx = 0; 
         gbcButton.gridy = 1;
-        contentPane1.add(btnBiblioteca, gbcButton);
+        contentPane1.add(btnAjustes, gbcButton);
         
         gbcButton.gridx = 1; 
         contentPane1.add(btnHistorial, gbcButton);
@@ -190,14 +190,7 @@ public class VentanaPrincipal extends JFrame {
             }
         });
         
-        btnCerrarSesion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	VentanaLogin ventanaLogin = new VentanaLogin();
-                ventanaLogin.setVisible(true);
-                dispose(); 
-            }
-        });
+
         
         btnHistorial.addActionListener(new ActionListener() {
 			
@@ -210,7 +203,7 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
         
-        btnBiblioteca.addActionListener(new ActionListener() {
+        btnAjustes.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

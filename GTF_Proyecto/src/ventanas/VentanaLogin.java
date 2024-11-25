@@ -26,7 +26,8 @@ public class VentanaLogin extends JFrame {
 	
     private JPanel contentPane;
     daoUsuario dao = new daoUsuario();
-
+    private String usuarioAutenticado;
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -109,6 +110,7 @@ public class VentanaLogin extends JFrame {
                 user.setContrasenya(new String(passwordField.getPassword()));
 
                 if (dao.comprobarUsuario(user)) {
+                	usuarioAutenticado = user.getUsuario();
                     VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
                     ventanaPrincipal.setVisible(true);
                     dispose();
@@ -117,6 +119,8 @@ public class VentanaLogin extends JFrame {
                 }
             }
         });
+        
+        
 
         // Botón "Registrarse"
         gbc.gridy = 3;
@@ -134,5 +138,9 @@ public class VentanaLogin extends JFrame {
         });
         
         
+    }
+    
+    public String getUsuario() {
+    	return usuarioAutenticado;
     }
 }

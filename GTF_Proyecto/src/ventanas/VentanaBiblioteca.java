@@ -35,9 +35,12 @@ public class VentanaBiblioteca extends JFrame {
 	private JButton btnCambiarUsuario;
 	private JButton btnCambiarContra;
 	private daoUsuario usuarioDao;
+	//private String usuarioAutenticado;
 
 	
-	public VentanaBiblioteca() {
+	public VentanaBiblioteca() {   ///(String usuarioAutenticado)
+		//this.usuarioAutenticado = usuarioAutenticado;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
@@ -108,6 +111,15 @@ public class VentanaBiblioteca extends JFrame {
 			}
 		});
         
+        btnCerrarSesion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	VentanaLogin ventanaLogin = new VentanaLogin();
+                ventanaLogin.setVisible(true);
+                dispose(); 
+            }
+        });
+        
 //        btnCambiarUsuario.addActionListener(new ActionListener() {
 //			
 //			@Override
@@ -116,11 +128,12 @@ public class VentanaBiblioteca extends JFrame {
 //				String nuevoNombre = JOptionPane.showInputDialog(VentanaBiblioteca.this, "Introduce nuevo nombre de usuario.");
 //				
 //				if(nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
-//					int idUsuario = 1; //////!!!
-//					boolean exito = usuarioDao.actualizarUsuario(idUsuario, nuevoNombre);
+//					 //////!!!
+//					boolean exito = usuarioDao.actualizarUsuario(usuarioAutenticado, nuevoNombre);
 //					
 //					if(exito) {
 //						JOptionPane.showMessageDialog(VentanaBiblioteca.this, "Nombre de usuario actualizado correctamente");
+//						this.usuarioAutenticado = nuevoNombre;
 //					}else {
 //						JOptionPane.showMessageDialog(VentanaBiblioteca.this, "Error al actualizar el nombre de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
 //					}

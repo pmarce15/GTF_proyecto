@@ -55,13 +55,13 @@ public class daoUsuario {
 	        }
 	    }
 	  
-	  public boolean actualizarUsuario (int idUsuario, String nuevoNombre){
+	  public boolean actualizarUsuario (String usuario, String nuevoNombre){
 		  PreparedStatement ps = null;
 		  
 		  try {
 			ps = cx.conectar().prepareStatement("UPDATE usuarios SET usuario = ? WHERE id_usuario = ?");
 			ps.setString(1, nuevoNombre);
-			ps.setInt(2, idUsuario);
+			ps.setString(2, usuario);
 			
 			int rowsAffected = ps.executeUpdate();
 			cx.desconectar();
