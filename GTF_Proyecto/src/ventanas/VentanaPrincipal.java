@@ -76,16 +76,7 @@ public class VentanaPrincipal extends JFrame {
         gbc1.insets = new Insets(20, 100, 200, 100);
         backgroundPanel.add(contentPane3, gbc1);
 
-        // Codigo para el juego en si
-//        for (int i = 1; i <= 3; i++) {
-//            JLabel label = new JLabel("Pais" + i); // Cambia el texto según sea necesario
-//            GridBagConstraints gbcLabel = new GridBagConstraints();
-//            gbcLabel.gridx = 0; // Columna 0
-//            gbcLabel.gridy = i - 1; // Fila según el número de etiqueta
-//            gbcLabel.insets = new Insets(5, 5, 5, 5); // Espacio alrededor de cada JLabel
-//            gbcLabel.anchor = GridBagConstraints.CENTER;
-//            contentPane1.add(label, gbcLabel);
-//        }
+     
 
         btnJugar = new JButton("Jugar");
         btnCerrarSesion = new JButton("Cerrar Sesión");
@@ -187,6 +178,17 @@ public class VentanaPrincipal extends JFrame {
         gbcButton.gridx = 1; 
         contentPane1.add(btnHistorial, gbcButton);
         
+        btnJugar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String dificultad = (String) comboBox.getSelectedItem();
+            	String modo = (String) comboBox2.getSelectedItem();
+            	VentanaJuego ventanaJuego = new VentanaJuego(dificultad,modo);
+            	ventanaJuego.setVisible(true);
+            	dispose();
+            	
+            }
+        });
         
         btnCerrarSesion.addActionListener(new ActionListener() {
             @Override
