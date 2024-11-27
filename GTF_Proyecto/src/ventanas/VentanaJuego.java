@@ -23,6 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import clases.Pais;
+
 public class VentanaJuego extends JFrame {
     private BackgroundPanel backgroundPanel;
     private JPanel contentPane1;
@@ -79,7 +81,14 @@ public class VentanaJuego extends JFrame {
             botones[i].addActionListener(e -> {
                 JButton botonPresionado = (JButton) e.getSource();
                 if (botonPresionado.getText().equals(paisCorrecto)) {
-                    configurarJuego("/facil.csv"); 
+
+                    if(dificultad.equals("Facil")) {
+                 	   configurarJuego("/facil.csv");
+                    }else if(dificultad.equals("Medio")){
+                 	   configurarJuego("/medio.csv");
+                    }else {
+                 	   configurarJuego("/dificil.csv");
+                    }
                 } else {
                     botonPresionado.setBackground(Color.RED);
                 }
@@ -92,72 +101,46 @@ public class VentanaJuego extends JFrame {
             contentPane1.add(botones[i], gbcBoton);
         }
 
-       
-        configurarJuego("/facil.csv");
+       if(dificultad.equals("Facil")) {
+    	   configurarJuego("/facil.csv");
+       }else if(dificultad.equals("Medio")){
+    	   configurarJuego("/medio.csv");
+       }else {
+    	   configurarJuego("/dificil.csv");
+       }
+        
     }
 
     private void configurarJuego(String path) {
-        try (BufferedReader br = new BufferedReader(new FileReader(getClass().getResource(path).getPath()))) {
-            ArrayList<String> lineas = new ArrayList<>();
-            String linea;
+        try {
+            // Obtener datos del archivo usando la clase Pais
+            String[] datos = Pais.obtenerDatos(path);
 
-            
-            while ((linea = br.readLine()) != null) {
-                lineas.add(linea);
-            }
-
-           
-            if (lineas.size() < 3) {
-                throw new IllegalArgumentException("El archivo debe contener al menos 3 líneas.");
-            }
-
-            Random random = new Random();
-            ArrayList<String> seleccionadas = new ArrayList<>();
-
-          
-            while (seleccionadas.size() < 3) {
-                int indice = random.nextInt(lineas.size());
-                if (!seleccionadas.contains(lineas.get(indice))) {
-                    seleccionadas.add(lineas.get(indice));
-                }
-            }
-
-           
+            String rutaImagen = datos[0];
+            this.paisCorrecto = datos[1];
             ArrayList<String> nombres = new ArrayList<>();
-            String rutaImagen = null;
-            for (int i = 0; i < seleccionadas.size(); i++) {
-                String[] partes = seleccionadas.get(i).split(";");
-                if (partes.length == 2) {
-                    String nombre = partes[0].trim();
-                    String ruta = partes[1].trim();
+            nombres.add(paisCorrecto);
+            nombres.add(datos[2]);
+            nombres.add(datos[3]);
 
-                    nombres.add(nombre);
-
-                    
-                    if (i == 0) {
-                        paisCorrecto = nombre; 
-                        rutaImagen = ruta;
-                    }
-                }
-            }
-
-            
+            // Barajar las opciones
             Collections.shuffle(nombres);
-            Dimension dimension = new Dimension(250, 40); 
-           
+
+            Dimension dimension = new Dimension(250, 40);
+
+            // Configurar botones con las opciones
             for (int i = 0; i < botones.length; i++) {
                 botones[i].setText(nombres.get(i));
                 botones[i].setBackground(null);
                 botones[i].setPreferredSize(dimension);
                 botones[i].setMinimumSize(dimension);
                 botones[i].setMaximumSize(dimension);
-                
             }
 
-            
+            // Configurar la imagen en el label
             if (rutaImagen != null) {
                 lblBanderas.setIcon(null);
-                lblBanderas.repaint(); 
+                lblBanderas.repaint();
 
                 ImageIcon icon = new ImageIcon(getClass().getResource("/" + rutaImagen));
                 Image img = icon.getImage();
