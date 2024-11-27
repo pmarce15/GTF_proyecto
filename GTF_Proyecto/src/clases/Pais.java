@@ -42,7 +42,7 @@ public class Pais {
 	public static String[] obtenerDatos(String path) throws IOException {
 	        ArrayList<String> lineas = new ArrayList<>();
 	        
-	        // Leer archivo
+	    
 	        try (BufferedReader br = new BufferedReader(new FileReader(Pais.class.getResource(path).getPath()))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
@@ -54,7 +54,7 @@ public class Pais {
 	            throw new IllegalArgumentException("El archivo debe contener al menos 3 líneas.");
 	        }
 
-	        // Seleccionar una línea y otras dos al azar
+	       
 	        Random random = new Random();
 	        ArrayList<String> seleccionadas = new ArrayList<>();
 	        while (seleccionadas.size() < 3) {
@@ -64,8 +64,8 @@ public class Pais {
 	            }
 	        }
 
-	        // Extraer datos de las líneas seleccionadas
-	        String[] datos = new String[4]; // [0] = imagen, [1] = país correcto, [2] = opción 2, [3] = opción 3
+	        
+	        String[] datos = new String[4]; 
 	        for (int i = 0; i < seleccionadas.size(); i++) {
 	            String[] partes = seleccionadas.get(i).split(";");
 	            if (partes.length == 2) {
@@ -73,10 +73,10 @@ public class Pais {
 	                String ruta = partes[1].trim();
 
 	                if (i == 0) {
-	                    datos[0] = ruta;  // Ruta de la imagen
-	                    datos[1] = nombre; // Nombre del país correcto
+	                    datos[0] = ruta;  
+	                    datos[1] = nombre; 
 	                } else {
-	                    datos[i + 1] = nombre; // Nombres de los otros países
+	                    datos[i + 1] = nombre; 
 	                }
 	            }
 	        }

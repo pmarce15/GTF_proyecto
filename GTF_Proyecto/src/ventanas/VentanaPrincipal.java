@@ -94,7 +94,7 @@ public class VentanaPrincipal extends JFrame {
         
         
         Font font = null;
-            // Cargar la fuente desde el directorio de recursos
+            
             try {
 				font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/pixelFont/ka1.ttf"));
 			} catch (FontFormatException | IOException e) {
@@ -106,7 +106,7 @@ public class VentanaPrincipal extends JFrame {
             lblDificultad.setFont(font);
             lblModoJuego.setFont(font);
             
-            // Efectos visuales
+          
             lblTitulo.setForeground(Color.WHITE);  
             lblTitulo.setOpaque(false);            
             lblTitulo.setBackground(new Color(0, 0, 0, 0)); 
