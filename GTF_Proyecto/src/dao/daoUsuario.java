@@ -31,7 +31,7 @@ public class daoUsuario {
 		}
 	}
 	
-	  public boolean comprobarUsuario(Usuarios user) {
+	  public boolean comprobarUsuario(Usuarios user) {       ////////////////////////////COMENTADO EN CLASE (HUGO)
 		  String sql = "SELECT contrasenya FROM usuarios WHERE usuario = ?";
 
 	        try (Connection connection = cx.conectar()) { 

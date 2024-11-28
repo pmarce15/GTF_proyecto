@@ -118,7 +118,7 @@ public class VentanaAjustes extends JFrame {
             }
         });
         
-        btnCambiarUsuario.addActionListener(new ActionListener() {
+        btnCambiarUsuario.addActionListener(new ActionListener() {   ////////////////////////////COMENTADO EN CLASE (HUGO) 
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

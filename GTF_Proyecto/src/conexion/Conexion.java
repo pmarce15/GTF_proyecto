@@ -7,11 +7,11 @@ import java.sql.SQLException;
 public class Conexion {
 	Connection cx=null;
 
-	public Connection conectar() {
+	public Connection conectar() {////////////////////////////COMENTADO EN CLASE (HUGO)
 		try {
 			Class.forName("org.sqlite.JDBC");
 			cx= DriverManager.getConnection("jdbc:sqlite:sistema.db");
-			System.out.println("Conexion exitosa");
+			System.out.println("Conexion exitosa");        
 			} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
