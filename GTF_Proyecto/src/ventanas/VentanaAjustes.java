@@ -35,7 +35,7 @@ public class VentanaAjustes extends JFrame {
 	private JButton btnCambiarUsuario;
 	private JButton btnCambiarContra;
 	private daoUsuario usuarioDao;
-	//private String usuarioAutenticado;
+	String usuarioAutenticado;
 
 	
 	public VentanaAjustes() {   ///(String usuarioAutenticado)
@@ -118,30 +118,70 @@ public class VentanaAjustes extends JFrame {
             }
         });
         
-//        btnCambiarUsuario.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				String nuevoNombre = JOptionPane.showInputDialog(VentanaBiblioteca.this, "Introduce nuevo nombre de usuario.");
-//				
-//				if(nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
-//					 //////!!!
-//					boolean exito = usuarioDao.actualizarUsuario(usuarioAutenticado, nuevoNombre);
-//					
-//					if(exito) {
-//						JOptionPane.showMessageDialog(VentanaBiblioteca.this, "Nombre de usuario actualizado correctamente");
-//						this.usuarioAutenticado = nuevoNombre;
-//					}else {
-//						JOptionPane.showMessageDialog(VentanaBiblioteca.this, "Error al actualizar el nombre de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}else {
-//					JOptionPane.showMessageDialog(VentanaBiblioteca.this, "El nombre de usuario no puede estar vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-//				}
-//			}
-//		});
+        btnCambiarUsuario.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String nuevoNombre = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce nuevo nombre de usuario.");
+				
+				if(nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+					 //////!!!
+					boolean exito = usuarioDao.actualizarUsuario(usuarioAutenticado, nuevoNombre);
+					
+					if(exito) {
+						JOptionPane.showMessageDialog(VentanaAjustes.this, "Nombre de usuario actualizado correctamente");
+						usuarioAutenticado = nuevoNombre;
+					}else {
+						JOptionPane.showMessageDialog(VentanaAjustes.this, "Error al actualizar el nombre de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}else {
+					JOptionPane.showMessageDialog(VentanaAjustes.this, "El nombre de usuario no puede estar vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
         
+        btnCambiarContra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String contrasenaActual = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce tu contraseña actual.");
+
+                if (contrasenaActual != null && !contrasenaActual.trim().isEmpty()) {
+                    Usuarios usuario = new Usuarios();
+                    usuario.setUsuario(usuarioAutenticado);
+                    usuario.setContrasenya(contrasenaActual);
+
+                    boolean esCorrecta = usuarioDao.comprobarUsuario(usuario);
+
+                    if (esCorrecta) {
+                        String nuevaContrasena = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce la nueva contraseña.");
+
+                        if (nuevaContrasena != null && !nuevaContrasena.trim().isEmpty()) {
+                            boolean exito = usuarioDao.actualizarContrasena(usuarioAutenticado, nuevaContrasena);
+
+                            if (exito) {
+                                JOptionPane.showMessageDialog(VentanaAjustes.this, "Contraseña actualizada correctamente");
+                            } else {
+                                JOptionPane.showMessageDialog(VentanaAjustes.this, "Error al actualizar la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(VentanaAjustes.this, "La nueva contraseña no puede estar vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(VentanaAjustes.this, "La contraseña actual es incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(VentanaAjustes.this, "La contraseña actual no puede estar vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+
 	}	
+	
+	public void setUsuarioAutenticado(String usuario) {
+	    this.usuarioAutenticado = usuario;
+	}
 	
 	public class BackgroundPanel extends JPanel {
 		private Image backgroundImage;

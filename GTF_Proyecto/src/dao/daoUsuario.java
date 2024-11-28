@@ -59,7 +59,7 @@ public class daoUsuario {
 		  PreparedStatement ps = null;
 		  
 		  try {
-			ps = cx.conectar().prepareStatement("UPDATE usuarios SET usuario = ? WHERE id_usuario = ?");
+			ps = cx.conectar().prepareStatement("UPDATE usuarios SET usuario = ? WHERE usuario = ?");
 			ps.setString(1, nuevoNombre);
 			ps.setString(2, usuario);
 			
@@ -73,4 +73,23 @@ public class daoUsuario {
 			return false;
 		}
 	  }
+	  
+	  public boolean actualizarContrasena(String usuario, String nuevaContrasena) {
+		    PreparedStatement ps = null;
+
+		    try {
+		        ps = cx.conectar().prepareStatement("UPDATE usuarios SET contrasenya = ? WHERE usuario = ?");
+		        ps.setString(1, nuevaContrasena); 
+		        ps.setString(2, usuario); 
+
+		        int rowsAffected = ps.executeUpdate();
+		        cx.desconectar();
+
+		        return rowsAffected > 0; 
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false; 
+		    }
+		}
+
 	}

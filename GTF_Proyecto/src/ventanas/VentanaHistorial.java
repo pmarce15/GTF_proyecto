@@ -117,8 +117,8 @@ public class VentanaHistorial extends JFrame {
         modeloPartidas.addColumn("Puntuación");
 
         // Datos ejemplo
-        modeloPartidas.addRow(new Object[]{"Clásico", "Fácil", 150});
-        modeloPartidas.addRow(new Object[]{"Supervivencia", "Difícil", 300});
+//        modeloPartidas.addRow(new Object[]{"Clásico", "Fácil", 150});
+//        modeloPartidas.addRow(new Object[]{"Supervivencia", "Difícil", 300});
 
         tablaPartidas = new JTable(modeloPartidas);
         tablaPartidas.setRowHeight(30);

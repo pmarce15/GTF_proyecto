@@ -218,6 +218,7 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				VentanaAjustes ventanaAjustes = new VentanaAjustes();
+				
 				ventanaAjustes.setVisible(true);
 				dispose();
 			}
