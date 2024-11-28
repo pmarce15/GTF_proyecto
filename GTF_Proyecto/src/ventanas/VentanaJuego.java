@@ -54,6 +54,8 @@ public class VentanaJuego extends JFrame {
         contentPane2.setOpaque(false);
         contentPane2.setLayout(new BorderLayout());
         
+      
+        
         Font font = null;
         
         try {

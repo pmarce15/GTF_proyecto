@@ -8,11 +8,14 @@ import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import clases.Pais;
+
 public class VentanaPrincipal extends JFrame {
     private Image backgroundImage;
     private JPanel contentPane1;
     private JPanel contentPane2;
     private JPanel contentPane3;
+    private JPanel contentPane4;
     private JButton btnJugar;
     private JButton btnBiblioteca;
     private JButton btnAjustes;
@@ -20,6 +23,8 @@ public class VentanaPrincipal extends JFrame {
     private JLabel lblDificultad;
     private JLabel lblModoJuego;
     private JLabel lblTitulo;
+    private JButton btnRetoDiario;
+    private JButton btnEstadisticasRetoDiario;
     
     public VentanaPrincipal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,7 +47,31 @@ public class VentanaPrincipal extends JFrame {
         contentPane3.setBackground(Color.RED);
         contentPane3.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
         
+        contentPane4 = new JPanel();
+        contentPane4.setBackground(new Color(0, 255, 255, 150));
+        contentPane4.setLayout(new GridLayout(1,2));
+        contentPane4.setOpaque(false);    
         
+        
+        btnRetoDiario = new JButton();
+        btnEstadisticasRetoDiario = new JButton();
+        btnRetoDiario.setContentAreaFilled(false); 
+        btnEstadisticasRetoDiario.setContentAreaFilled(false);
+       
+        
+        ImageIcon icon1 = new ImageIcon(getClass().getResource("/imagenes/RetoDiario.png"));
+        Image img1 = icon1.getImage();
+        Image scaledImg1 = img1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        btnRetoDiario.setIcon(new ImageIcon(scaledImg1));
+       
+        
+        ImageIcon icon2 = new ImageIcon(getClass().getResource("/imagenes/EstadisticasRetoDiario.png"));
+        Image img2 = icon2.getImage();
+        Image scaledImg2 = img2.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        btnEstadisticasRetoDiario.setIcon(new ImageIcon(scaledImg2));
+        
+        contentPane4.add(btnRetoDiario);
+        contentPane4.add(btnEstadisticasRetoDiario);
         
         setResizable(false);
         setLocationRelativeTo(null);
@@ -75,6 +104,18 @@ public class VentanaPrincipal extends JFrame {
         gbc1.gridy = 0;
         gbc1.insets = new Insets(20, 100, 200, 100);
         backgroundPanel.add(contentPane3, gbc1);
+        
+        GridBagConstraints gbc4 = new GridBagConstraints();
+        gbc4.fill = GridBagConstraints.BOTH;
+        gbc4.weightx = 1.0;
+        gbc4.weighty = 1.0;
+        gbc4.gridx = 0;
+        gbc4.gridy = 0;
+        gbc4.insets = new Insets(10, 350, 225, 10);
+        backgroundPanel.add(contentPane4, gbc4);
+        
+        
+       
 
      
 
@@ -216,16 +257,130 @@ public class VentanaPrincipal extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				VentanaAjustes ventanaAjustes = new VentanaAjustes();
 				
+				VentanaAjustes ventanaAjustes = new VentanaAjustes();
 				ventanaAjustes.setVisible(true);
 				dispose();
 			}
 		});
        
-        
-        
+        btnRetoDiario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = new JDialog(); 
+                dialog.setTitle("Reto Diario");
+                dialog.setModal(true); 
+                dialog.setSize(215, 300);
+                dialog.setLayout(new BorderLayout());
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+                JPanel panel = new JPanel(new GridLayout(4, 1));
+                JPanel panel2 = new JPanel(new GridLayout(1, 3));
+                JLabel lblBandera = new JLabel();
+                JLabel lblVida1 = new JLabel();
+                JLabel lblVida2 = new JLabel();
+                JLabel lblVida3 = new JLabel();
+                JButton btnIntento = new JButton("Probar");
+                JTextField textField = new JTextField();
+
+               
+                ImageIcon iconVida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
+                Image imgVida1 = iconVida1.getImage();
+                Image scaledImgVida1 = imgVida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                lblVida1.setIcon(new ImageIcon(scaledImgVida1));
+
+                ImageIcon iconVida2 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
+                Image imgVida2 = iconVida2.getImage();
+                Image scaledImgVida2 = imgVida2.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                lblVida2.setIcon(new ImageIcon(scaledImgVida2));
+
+                ImageIcon iconVida3 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
+                Image imgVida3 = iconVida3.getImage();
+                Image scaledImgVida3 = imgVida3.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                lblVida3.setIcon(new ImageIcon(scaledImgVida3));
+
+              
+                String[] datos = null;
+                try {
+                    datos = Pais.obtenerDatos("/facil.csv");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+
+                String rutaImagen = datos[0];
+                String paisCorrecto = datos[1];
+
+               
+                if (rutaImagen != null) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/" + rutaImagen));
+                    Image img = icon.getImage();
+                    lblBandera.setIcon(new ImageIcon(img));
+                }
+
+               
+                panel2.add(lblVida1);
+                panel2.add(lblVida2);
+                panel2.add(lblVida3);
+
+                panel.add(lblBandera);
+                panel.add(textField);
+                panel.add(panel2);
+                panel.add(btnIntento);
+
+                dialog.add(panel, BorderLayout.CENTER);
+
+                
+                btnIntento.addActionListener(new ActionListener() {
+                    private int contadorVidas = 3;
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String paisIntento = textField.getText().trim().toUpperCase();
+                        String paisCorrectoNormalizado = paisCorrecto.toUpperCase();
+
+                        if (paisCorrectoNormalizado.equals(paisIntento)) {
+                            JOptionPane.showMessageDialog(
+                                dialog,
+                                "¡Correcto! El país es: " + paisCorrecto,
+                                "Éxito",
+                                JOptionPane.INFORMATION_MESSAGE
+                            );
+                            dialog.dispose(); 
+                        } else {
+                            contadorVidas--;
+                            if (contadorVidas == 2) {
+                                ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
+                                Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                lblVida1.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                            } else if (contadorVidas == 1) {
+                            	 ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                 Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
+                                 Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                 lblVida2.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                            } else if (contadorVidas == 0) {
+                            	 ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                 Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
+                                 Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                 lblVida3.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                                JOptionPane.showMessageDialog(
+                                    dialog,
+                                    "Has perdido. El país correcto era: " + paisCorrecto,
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                                );
+                                dialog.dispose(); 
+                            }
+                        }
+                    }
+                });
+
+                dialog.setLocationRelativeTo(null); 
+                dialog.setVisible(true); 
+            }
+        });
+       
     }
 
     public class BackgroundPanel extends JPanel {

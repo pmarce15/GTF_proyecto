@@ -54,54 +54,52 @@ public class VentanaLogin extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Cargar la imagen, redimensionarla a 100x100 y crear el JLabel
+        
         ImageIcon iconLogo = new ImageIcon(getClass().getResource("/imagenes/logoGTFInicioSesion.jpeg"));
         Image image = iconLogo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(image);
         JLabel labelLogo = new JLabel(scaledIcon);
 
-        // Añadir la imagen en la esquina superior izquierda
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridheight = 3;  // Reservar espacio vertical para la imagen
+        gbc.gridheight = 3;  
         gbc.anchor = GridBagConstraints.NORTHWEST;
         contentPane.add(labelLogo, gbc);
 
-        // Ajustar las posiciones de los otros componentes
-        // Etiqueta "Usuario"
+        
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         contentPane.add(new JLabel("Usuario:"), gbc);
 
-        // Campo de texto para el usuario
+        
         gbc.gridx = 2;
         JTextField usuarioField = new JTextField(15);
         contentPane.add(usuarioField, gbc);
 
-        // Etiqueta "Contraseña"
         gbc.gridx = 1;
         gbc.gridy = 1;
         contentPane.add(new JLabel("Contraseña:"), gbc);
 
-        // Campo de texto para la contraseña
+        
         gbc.gridx = 2;
         JPasswordField passwordField = new JPasswordField(15);
         contentPane.add(passwordField, gbc);
 
-        // Botón "Iniciar Sesión"
+        
         gbc.gridx = 1;
         gbc.gridy = 2;
-        gbc.gridwidth = 2; // Hacer que el botón ocupe ambas columnas para centrarlo
+        gbc.gridwidth = 2; 
         gbc.anchor = GridBagConstraints.CENTER;
         JButton loginButton = new JButton("Iniciar Sesión");
         contentPane.add(loginButton, gbc);
 
-        // Configuración del icono y título de la ventana
+        
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagenes/logoGTF.jpg")));
         setTitle("Inicio Sesión GTF");
 
-        // Acción del botón "Iniciar Sesión"
+        
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,12 +120,12 @@ public class VentanaLogin extends JFrame {
         
         
 
-        // Botón "Registrarse"
+        
         gbc.gridy = 3;
         JButton registerButton = new JButton("Registrarse");
         contentPane.add(registerButton, gbc);
 
-        // Acción del botón "Registrarse"
+        
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,7 +138,6 @@ public class VentanaLogin extends JFrame {
         
     }
     
-    public String getUsuario() {
-    	return usuarioAutenticado;
-    }
+    
 }
+
