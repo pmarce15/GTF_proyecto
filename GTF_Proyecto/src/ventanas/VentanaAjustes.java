@@ -131,7 +131,7 @@ public class VentanaAjustes extends JFrame {
 					
 					if(exito) {
 						JOptionPane.showMessageDialog(VentanaAjustes.this, "Nombre de usuario actualizado correctamente");
-						usuarioAutenticado = nuevoNombre;
+						usuarioAutenticado = nuevoNombre;//*****
 					}else {
 						JOptionPane.showMessageDialog(VentanaAjustes.this, "Error al actualizar el nombre de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
 					}

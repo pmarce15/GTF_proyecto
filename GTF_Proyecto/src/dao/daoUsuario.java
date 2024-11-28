@@ -67,6 +67,7 @@ public class daoUsuario {
 			cx.desconectar();
 			
 			return rowsAffected > 0; // si se actualiza al menos una fila, devuelve true
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
