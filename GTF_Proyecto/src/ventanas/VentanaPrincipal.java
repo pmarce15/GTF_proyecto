@@ -4,6 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -283,42 +287,37 @@ public class VentanaPrincipal extends JFrame {
                 JButton btnIntento = new JButton("Probar");
                 JTextField textField = new JTextField();
 
-               
-                ImageIcon iconVida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
-                Image imgVida1 = iconVida1.getImage();
-                Image scaledImgVida1 = imgVida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                lblVida1.setIcon(new ImageIcon(scaledImgVida1));
+                
+                ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
+                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                lblVida1.setIcon(new ImageIcon(imgVida));
+                lblVida2.setIcon(new ImageIcon(imgVida));
+                lblVida3.setIcon(new ImageIcon(imgVida));
 
-                ImageIcon iconVida2 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
-                Image imgVida2 = iconVida2.getImage();
-                Image scaledImgVida2 = imgVida2.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                lblVida2.setIcon(new ImageIcon(scaledImgVida2));
-
-                ImageIcon iconVida3 = new ImageIcon(getClass().getResource("/imagenes/corazonVida.png"));
-                Image imgVida3 = iconVida3.getImage();
-                Image scaledImgVida3 = imgVida3.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                lblVida3.setIcon(new ImageIcon(scaledImgVida3));
-
-              
-                String[] datos = null;
+                
+                Map<String, String> datos = null;
                 try {
-                    datos = Pais.obtenerDatos("/facil.csv");
+                    datos = Pais.cargarPaises("/facil.csv");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     return;
                 }
 
-                String rutaImagen = datos[0];
-                String paisCorrecto = datos[1];
+                
+                List<String> nombresPaises = new ArrayList<>(datos.keySet());
+                Collections.shuffle(nombresPaises);
 
-               
+                String paisCorrecto = nombresPaises.get(0); 
+                String rutaImagen = datos.get(paisCorrecto);
+
+                
                 if (rutaImagen != null) {
                     ImageIcon icon = new ImageIcon(getClass().getResource("/" + rutaImagen));
-                    Image img = icon.getImage();
+                    Image img = icon.getImage().getScaledInstance(150, 100, Image.SCALE_SMOOTH);
                     lblBandera.setIcon(new ImageIcon(img));
                 }
 
-               
+                
                 panel2.add(lblVida1);
                 panel2.add(lblVida2);
                 panel2.add(lblVida3);
@@ -350,20 +349,17 @@ public class VentanaPrincipal extends JFrame {
                         } else {
                             contadorVidas--;
                             if (contadorVidas == 2) {
-                                ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
-                                Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                lblVida1.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                lblVida1.setIcon(new ImageIcon(imgVida));
                             } else if (contadorVidas == 1) {
-                            	 ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                 Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
-                                 Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                 lblVida2.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                lblVida2.setIcon(new ImageIcon(imgVida));
                             } else if (contadorVidas == 0) {
-                            	 ImageIcon iconVidaPerdida1 = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                 Image imgVidaPerdida1 = iconVidaPerdida1.getImage();
-                                 Image scaledImgVidaPerdida1 = imgVidaPerdida1.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                 lblVida3.setIcon(new ImageIcon(scaledImgVidaPerdida1));
+                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
+                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                                lblVida3.setIcon(new ImageIcon(imgVida));
                                 JOptionPane.showMessageDialog(
                                     dialog,
                                     "Has perdido. El país correcto era: " + paisCorrecto,
@@ -376,13 +372,12 @@ public class VentanaPrincipal extends JFrame {
                     }
                 });
 
+                // Mostrar diálogo
                 dialog.setLocationRelativeTo(null); 
                 dialog.setVisible(true); 
             }
         });
-       
     }
-
     public class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 

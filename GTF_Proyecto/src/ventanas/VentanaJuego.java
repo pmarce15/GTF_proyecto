@@ -17,12 +17,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -34,6 +37,8 @@ public class VentanaJuego extends JFrame {
     private JPanel contentPane2;
     private JLabel lblBanderas;
     private JLabel lblPuntuacion;
+    private JLabel lblContador;
+    private int tiempoTotal=0;
     private JButton[] botones = new JButton[3];
     private String paisCorrecto; 
     private int puntuacion= 0;
@@ -74,7 +79,14 @@ public class VentanaJuego extends JFrame {
         lblPuntuacion.setBackground(Color.WHITE); 
         lblPuntuacion.setOpaque(true);            
         lblPuntuacion.setFont(font);
-      
+        lblContador = new JLabel("05:00");
+        lblContador.setHorizontalAlignment(SwingConstants.CENTER); 
+        lblContador.setVerticalAlignment(SwingConstants.CENTER);   
+        lblContador.setForeground(Color.BLACK); 
+        lblContador.setBackground(Color.WHITE); 
+        lblContador.setOpaque(true);            
+        lblContador.setFont(font);
+        
 
 
         setResizable(false);
@@ -107,6 +119,15 @@ public class VentanaJuego extends JFrame {
         gbc3.gridy = 0;
         gbc3.insets = new Insets(10, 370, 200, 10);
         backgroundPanel.add(lblPuntuacion, gbc3);
+        
+        GridBagConstraints gbc4 = new GridBagConstraints();
+        gbc4.fill = GridBagConstraints.BOTH;
+        gbc4.weightx = 1.0;
+        gbc4.weighty = 1.0;
+        gbc4.gridx = 0;
+        gbc4.gridy = 0;
+        gbc4.insets = new Insets(10, 10, 200, 320);
+        backgroundPanel.add(lblContador, gbc4);
 
         lblBanderas = new JLabel();
         contentPane2.add(lblBanderas, BorderLayout.CENTER);
@@ -150,36 +171,85 @@ public class VentanaJuego extends JFrame {
        }else {
     	   configurarJuego("/dificil.csv");
        }
-        
+       Thread hiloContador = new Thread(() -> {
+    	   int tiempoFacil= (int) (0.5 * 60);
+    	   int tiempoMedio= (1 * 60);
+    	   int tiempoDificil= (3 * 60);
+    	   
+    	   if(dificultad.equals("Facil")) {
+    		   	tiempoTotal = tiempoFacil; 
+    	   }else if(dificultad.equals("Medio")){
+    		   tiempoTotal = tiempoMedio; 
+    	   }else {
+    		   tiempoTotal = tiempoDificil; 
+    	   }
+           try {
+			while (tiempoTotal >= 0) {
+                   int minutos = tiempoTotal / 60;
+                   int segundos = tiempoTotal % 60;
+
+                   
+                   String tiempoFormateado = String.format("%02d:%02d", minutos, segundos);
+                   lblContador.setText(tiempoFormateado);
+
+                   
+                   tiempoTotal--;
+                   Thread.sleep(1000);
+               }
+               JOptionPane.showMessageDialog(
+                       backgroundPanel,
+                       "¡Partida terminada!",
+                       "Fin del Temporizador",
+                       JOptionPane.INFORMATION_MESSAGE
+                   );
+               VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+               ventanaPrincipal.setVisible(true);
+               dispose(); 
+               
+           } catch (InterruptedException e) {
+               lblContador.setText("Interrumpido");
+           }
+       });
+
+       
+       hiloContador.start();
     }
 
     private void configurarJuego(String path) {
         try {
             
-            String[] datos = Pais.obtenerDatos(path);
+            Map<String, String> datos = Pais.cargarPaises(path);
 
-            String rutaImagen = datos[0];
-            this.paisCorrecto = datos[1];
-            ArrayList<String> nombres = new ArrayList<>();
-            nombres.add(paisCorrecto);
-            nombres.add(datos[2]);
-            nombres.add(datos[3]);
+            
+            List<String> nombresPaises = new ArrayList<>(datos.keySet());
+            Collections.shuffle(nombresPaises);
 
-          
-            Collections.shuffle(nombres);
+            this.paisCorrecto = nombresPaises.get(0); 
+            String rutaImagen = datos.get(paisCorrecto);
 
+            
+            ArrayList<String> opciones = new ArrayList<>();
+            opciones.add(paisCorrecto);
+
+           
+            for (int i = 1; i < 3 && i < nombresPaises.size(); i++) {
+                opciones.add(nombresPaises.get(i));
+            }
+
+            
+            Collections.shuffle(opciones);
+
+            
             Dimension dimension = new Dimension(250, 40);
-
-         
             for (int i = 0; i < botones.length; i++) {
-                botones[i].setText(nombres.get(i));
+                botones[i].setText(opciones.get(i));
                 botones[i].setBackground(null);
                 botones[i].setPreferredSize(dimension);
                 botones[i].setMinimumSize(dimension);
                 botones[i].setMaximumSize(dimension);
             }
 
-         
+            
             if (rutaImagen != null) {
                 lblBanderas.setIcon(null);
                 lblBanderas.repaint();
@@ -192,7 +262,13 @@ public class VentanaJuego extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        
+
+        
+       
     }
+    
 
     public class BackgroundPanel extends JPanel {
         private Image backgroundImage;
