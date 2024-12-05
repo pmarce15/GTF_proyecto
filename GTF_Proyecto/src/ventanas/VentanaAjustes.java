@@ -38,13 +38,14 @@ public class VentanaAjustes extends JFrame {
 	String usuarioAutenticado;
 
 	
-	public VentanaAjustes() {   ///(String usuarioAutenticado)
+	public VentanaAjustes(Usuarios user) {   ///(String usuarioAutenticado)
 		//this.usuarioAutenticado = usuarioAutenticado;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página Historial GTF");
+        
         
         BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
         backgroundPanel.setLayout(new GridBagLayout());
@@ -103,7 +104,7 @@ public class VentanaAjustes extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaPrincipal vp = new VentanaPrincipal();
+				VentanaPrincipal vp = new VentanaPrincipal(user);
 				vp.setVisible(true);
 				dispose();
 			}

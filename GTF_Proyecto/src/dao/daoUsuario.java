@@ -18,11 +18,22 @@ public class daoUsuario {
 	
 	public boolean insertarUsuario(Usuarios user) {
 		PreparedStatement ps=null;
+		PreparedStatement psPuntuaciones=null;
+		PreparedStatement psReto=null;
+		
 		try {
 			ps=cx.conectar().prepareStatement("INSERT INTO usuarios VALUES(?,?)");
 			ps.setString(1, user.getUsuario());
 			ps.setString(2, user.getContrasenya());
 			ps.executeUpdate();
+			
+			psPuntuaciones= cx.conectar().prepareStatement("INSERT INTO puntuaciones VALUES(?,0)");
+			psPuntuaciones.setString(1, user.getUsuario());
+			psPuntuaciones.executeUpdate();
+			
+			psReto= cx.conectar().prepareStatement("INSERT INTO retoDiario VALUES(?,0,0,0,0,0)");
+			psReto.setString(1, user.getUsuario());
+			psReto.executeUpdate();
 			cx.desconectar();
 			return true;
 		} catch (SQLException e) {
@@ -92,5 +103,117 @@ public class daoUsuario {
 		        return false; 
 		    }
 		}
+	  
+	  public boolean actualizarPuntuacion(Usuarios usuario) {
+		    PreparedStatement ps = null;
+		    try {
+		        ps = cx.conectar().prepareStatement("UPDATE puntuaciones SET puntuacion = ? WHERE usuario = ?");
+		        ps.setInt(1, usuario.getPuntuacion());
+		        ps.setString(2, usuario.getUsuario());
+		        ps.executeUpdate();
+		        cx.desconectar();
+		        return true;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false; 
+		    }
+		   }
+	  
+	  public boolean actualizarAciertosYFallos(Usuarios usuario) {
+		    PreparedStatement psAciertos = null;
+		    PreparedStatement psFallos = null;
+		    try {
+		        psAciertos = cx.conectar().prepareStatement("UPDATE retoDiario SET aciertos = ? WHERE usuario = ?");
+		        psAciertos.setInt(1, usuario.getAciertos());
+		        psAciertos.setString(2, usuario.getUsuario());
+		        psAciertos.executeUpdate();
+		        
+		        psFallos = cx.conectar().prepareStatement("UPDATE retoDiario SET fallos = ? WHERE usuario = ?");
+		        psFallos.setInt(1, usuario.getFallos());
+		        psFallos.setString(2, usuario.getUsuario());
+		        psFallos.executeUpdate();
+		        cx.desconectar();
+		        return true;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false; 
+		    }
+		   }
+	  public int obtenerPuntuacion(String usuario) {       
+		  String sql = "SELECT puntuacion FROM puntuaciones WHERE usuario = ?";
 
+	        try (Connection connection = cx.conectar()) { 
+	            if (connection == null) {
+	                System.out.println("Error: No se pudo conectar a la base de datos.");
+	                return 0; 
+	            }
+
+	            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+	                ps.setString(1, usuario);
+	                ResultSet rs = ps.executeQuery();
+	                if (rs.next()) {
+	                    return rs.getInt("puntuacion"); 
+	                } else {
+	                    return 0; 
+	                }
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error al acceder a la base de datos: " + e.getMessage());
+	            return 0; 
+	        }
+	    }
+	  
+	  public int obtenerAciertos(String usuario) {       
+		  String sql = "SELECT aciertos FROM retoDiario WHERE usuario = ?";
+		 
+
+	        try (Connection connection = cx.conectar()) { 
+	            if (connection == null) {
+	                System.out.println("Error: No se pudo conectar a la base de datos.");
+	                return 0; 
+	            }
+
+	            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+	                ps.setString(1, usuario);
+	                ResultSet rs = ps.executeQuery();
+	                if (rs.next()) {
+	                    return rs.getInt("aciertos"); 
+	                } else {
+	                    return 0; 
+	                }
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error al acceder a la base de datos: " + e.getMessage());
+	            return 0; 
+	        }
+	        
+	    }
+	  
+	  public int obtenerFallos(String usuario) {       
+		  String sql = "SELECT fallos FROM retoDiario WHERE usuario = ?";
+		 
+
+	        try (Connection connection = cx.conectar()) { 
+	            if (connection == null) {
+	                System.out.println("Error: No se pudo conectar a la base de datos.");
+	                return 0; 
+	            }
+
+	            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+	                ps.setString(1, usuario);
+	                ResultSet rs = ps.executeQuery();
+	                if (rs.next()) {
+	                    return rs.getInt("fallos"); 
+	                } else {
+	                    return 0; 
+	                }
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error al acceder a la base de datos: " + e.getMessage());
+	            return 0; 
+	        }
+	        
+	    }
+
+		
 	}

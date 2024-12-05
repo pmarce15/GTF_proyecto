@@ -106,10 +106,12 @@ public class VentanaLogin extends JFrame {
                 Usuarios user = new Usuarios();
                 user.setUsuario(usuarioField.getText());
                 user.setContrasenya(new String(passwordField.getPassword()));
-
+                
                 if (dao.comprobarUsuario(user)) {
-                	usuarioAutenticado = user.getUsuario();
-                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+                	user.setPuntuacion(dao.obtenerPuntuacion(usuarioField.getText()));
+                	user.setAciertos(dao.obtenerAciertos(usuarioField.getText()));
+                	user.setFallos(dao.obtenerFallos(usuarioField.getText()));
+                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
                     ventanaPrincipal.setVisible(true);
                     dispose();
                 } else {

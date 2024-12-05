@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Map;
 import javax.swing.*;
@@ -14,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Pais;
+import modelo.Usuarios;
 
 public class VentanaBiblioteca extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -24,12 +27,14 @@ public class VentanaBiblioteca extends JFrame {
     private JTable tablaPaises;
     private DefaultTableModel modeloTabla;
 
-    public VentanaBiblioteca() {
+    public VentanaBiblioteca(Usuarios user) {
         // Configuración básica de la ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
+        setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página principal GTF");
+        setResizable(false);
+        setLocationRelativeTo(null);
 
         // Configurar el fondo
         BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
@@ -83,7 +88,14 @@ public class VentanaBiblioteca extends JFrame {
         btnMedio.addActionListener(e -> cargarPaisesEnTabla("/medio.csv"));
         btnDificil.addActionListener(e -> cargarPaisesEnTabla("/dificil.csv"));
 
-        btnAtras.addActionListener(e -> volverAtras());
+        btnAtras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal vp = new VentanaPrincipal(user);
+                vp.setVisible(true);
+                dispose();
+            }
+        });
     }
 
     private void cargarPaisesEnTabla(String path) {
@@ -109,12 +121,7 @@ public class VentanaBiblioteca extends JFrame {
         }
     }
 
-    private void volverAtras() {
-        // Lógica para regresar a la ventana anterior
-    	VentanaPrincipal vp = new VentanaPrincipal();
-    	vp.setVisible(true);
-        this.dispose();
-    }
+ 
 
     private class BackgroundPanel extends JPanel {
         private Image backgroundImage;
@@ -130,10 +137,5 @@ public class VentanaBiblioteca extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VentanaBiblioteca ventana = new VentanaBiblioteca();
-            ventana.setVisible(true);
-        });
-    }
+
 }

@@ -13,6 +13,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import clases.Pais;
+import dao.daoUsuario;
+import modelo.Usuarios;
 
 public class VentanaPrincipal extends JFrame {
     private Image backgroundImage;
@@ -29,14 +31,17 @@ public class VentanaPrincipal extends JFrame {
     private JLabel lblTitulo;
     private JButton btnRetoDiario;
     private JButton btnEstadisticasRetoDiario;
+    daoUsuario dao = new daoUsuario();
     
-    public VentanaPrincipal() {
+    public VentanaPrincipal(Usuarios user) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página principal GTF");
         BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
         backgroundPanel.setLayout(new GridBagLayout());
+        setResizable(false);
+        setLocationRelativeTo(null);
 
         contentPane1 = new JPanel();
         contentPane1.setBackground(new Color(0, 255, 255, 150));
@@ -77,8 +82,7 @@ public class VentanaPrincipal extends JFrame {
         contentPane4.add(btnRetoDiario);
         contentPane4.add(btnEstadisticasRetoDiario);
         
-        setResizable(false);
-        setLocationRelativeTo(null);
+        
         setContentPane(backgroundPanel);
 
        
@@ -228,7 +232,7 @@ public class VentanaPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	String dificultad = (String) comboBox.getSelectedItem();
             	String modo = (String) comboBox2.getSelectedItem();
-            	VentanaJuego ventanaJuego = new VentanaJuego(dificultad,modo);
+            	VentanaJuego ventanaJuego = new VentanaJuego(dificultad,modo,user);
             	ventanaJuego.setVisible(true);
             	dispose();
             	
@@ -240,7 +244,7 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaBiblioteca ventanaBiblioteca = new VentanaBiblioteca();
+				VentanaBiblioteca ventanaBiblioteca = new VentanaBiblioteca(user);
 				ventanaBiblioteca.setVisible(true);
 				dispose();
 			}
@@ -251,7 +255,7 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaHistorial ventanaHistorial = new VentanaHistorial();
+				VentanaHistorial ventanaHistorial = new VentanaHistorial(user);
 				ventanaHistorial.setVisible(true);
 				dispose();				
 			}
@@ -262,7 +266,7 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				VentanaAjustes ventanaAjustes = new VentanaAjustes();
+				VentanaAjustes ventanaAjustes = new VentanaAjustes(user);
 				ventanaAjustes.setVisible(true);
 				dispose();
 			}
@@ -345,7 +349,11 @@ public class VentanaPrincipal extends JFrame {
                                 "Éxito",
                                 JOptionPane.INFORMATION_MESSAGE
                             );
+                            int nuevoAciertos = user.getAciertos()+1;
+                            user.setAciertos(nuevoAciertos);
+                            dao.actualizarAciertosYFallos(user);
                             dialog.dispose(); 
+                            
                         } else {
                             contadorVidas--;
                             if (contadorVidas == 2) {
@@ -366,13 +374,17 @@ public class VentanaPrincipal extends JFrame {
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE
                                 );
+                                int nuevoFallos = user.getFallos()+1;
+                                user.setFallos(nuevoFallos);
+                                dao.actualizarAciertosYFallos(user);
                                 dialog.dispose(); 
+                               
                             }
                         }
                     }
                 });
 
-                // Mostrar diálogo
+                
                 dialog.setLocationRelativeTo(null); 
                 dialog.setVisible(true); 
             }
@@ -392,8 +404,4 @@ public class VentanaPrincipal extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        VentanaPrincipal ventana = new VentanaPrincipal();
-        ventana.setVisible(true);
-    }
 }

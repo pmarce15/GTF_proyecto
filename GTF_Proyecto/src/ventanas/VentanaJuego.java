@@ -30,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import clases.Pais;
+import dao.daoUsuario;
+import modelo.Usuarios;
 
 public class VentanaJuego extends JFrame {
     private BackgroundPanel backgroundPanel;
@@ -42,14 +44,17 @@ public class VentanaJuego extends JFrame {
     private JButton[] botones = new JButton[3];
     private String paisCorrecto; 
     private int puntuacion= 0;
+    daoUsuario dao = new daoUsuario();
 
-    public VentanaJuego(String dificultad, String modo) {
+    public VentanaJuego(String dificultad, String modo, Usuarios user) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página Historial GTF");
         BackgroundPanel backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
         backgroundPanel.setLayout(new GridBagLayout());
+        setResizable(false);
+        setLocationRelativeTo(null);
 
         contentPane1 = new JPanel();
         contentPane1.setOpaque(false);
@@ -89,8 +94,7 @@ public class VentanaJuego extends JFrame {
         
 
 
-        setResizable(false);
-        setLocationRelativeTo(null);
+       
         setContentPane(backgroundPanel);
 
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -202,7 +206,11 @@ public class VentanaJuego extends JFrame {
                        "Fin del Temporizador",
                        JOptionPane.INFORMATION_MESSAGE
                    );
-               VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+               
+               int nuevaPuntuacion= user.getPuntuacion()+puntuacion;
+               user.setPuntuacion(nuevaPuntuacion);
+               dao.actualizarPuntuacion(user);
+               VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
                ventanaPrincipal.setVisible(true);
                dispose(); 
                

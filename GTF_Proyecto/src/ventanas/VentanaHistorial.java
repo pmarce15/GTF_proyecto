@@ -22,6 +22,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Usuarios;
+
 public class VentanaHistorial extends JFrame {
 
     private BackgroundPanel backgroundPanel;
@@ -32,11 +34,13 @@ public class VentanaHistorial extends JFrame {
     private DefaultTableModel modeloPartidas;
     private static String usuarioAutenticado = "";
 
-    public VentanaHistorial() {
+    public VentanaHistorial(Usuarios user) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 600, 400);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
         setTitle("Página Historial GTF");
+        setResizable(false);
+        setLocationRelativeTo(null);
 
         backgroundPanel = new BackgroundPanel("/imagenes/FondoGeneral1.png");
         backgroundPanel.setLayout(new GridBagLayout());
@@ -62,7 +66,7 @@ public class VentanaHistorial extends JFrame {
         botonAtras.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VentanaPrincipal vp = new VentanaPrincipal();
+                VentanaPrincipal vp = new VentanaPrincipal(user);
                 vp.setVisible(true);
                 dispose();
             }
