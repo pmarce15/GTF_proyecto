@@ -31,7 +31,7 @@ public class daoUsuario {
 			psPuntuaciones.setString(1, user.getUsuario());
 			psPuntuaciones.executeUpdate();
 			
-			psReto= cx.conectar().prepareStatement("INSERT INTO retoDiario VALUES(?,0,0,0,0,0)");
+			psReto= cx.conectar().prepareStatement("INSERT INTO retoDiario VALUES(?,0,0)");
 			psReto.setString(1, user.getUsuario());
 			psReto.executeUpdate();
 			cx.desconectar();

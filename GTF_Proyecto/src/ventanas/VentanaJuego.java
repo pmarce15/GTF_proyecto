@@ -17,9 +17,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -44,6 +46,7 @@ public class VentanaJuego extends JFrame {
     private JButton[] botones = new JButton[3];
     private String paisCorrecto; 
     private int puntuacion= 0;
+    private Set<String> paisesMostrados = new HashSet<>();
     daoUsuario dao = new daoUsuario();
 
     public VentanaJuego(String dificultad, String modo, Usuarios user) {
@@ -225,29 +228,44 @@ public class VentanaJuego extends JFrame {
 
     private void configurarJuego(String path) {
         try {
-            
             Map<String, String> datos = Pais.cargarPaises(path);
 
-            
+           
             List<String> nombresPaises = new ArrayList<>(datos.keySet());
-            Collections.shuffle(nombresPaises);
+            nombresPaises.removeAll(paisesMostrados); 
 
-            this.paisCorrecto = nombresPaises.get(0); 
+            if (nombresPaises.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "¡No quedan más países por mostrar!",
+                    "Fin del Juego",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                return;
+            }
+
+            
+            Collections.shuffle(nombresPaises);
+            this.paisCorrecto = nombresPaises.get(0);
+
+           
+            paisesMostrados.add(paisCorrecto);
+
+            
             String rutaImagen = datos.get(paisCorrecto);
 
             
             ArrayList<String> opciones = new ArrayList<>();
             opciones.add(paisCorrecto);
 
-           
+            
             for (int i = 1; i < 3 && i < nombresPaises.size(); i++) {
                 opciones.add(nombresPaises.get(i));
             }
 
-            
             Collections.shuffle(opciones);
 
-            
+           
             Dimension dimension = new Dimension(250, 40);
             for (int i = 0; i < botones.length; i++) {
                 botones[i].setText(opciones.get(i));
@@ -270,11 +288,6 @@ public class VentanaJuego extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
-
-        
-       
     }
     
 

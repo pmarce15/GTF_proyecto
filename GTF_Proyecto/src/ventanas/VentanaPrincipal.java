@@ -3,7 +3,15 @@ package ventanas;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -275,6 +283,24 @@ public class VentanaPrincipal extends JFrame {
         btnRetoDiario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
+                String archivoUltimaFecha = "reto_diario.txt";
+                
+                
+                if (!puedeJugar(archivoUltimaFecha)) {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Ya has jugado el Reto Diario. Intentalo de nuevo después de 24 horas.",
+                        "Reto Diario",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    return;
+                }
+
+                
+                guardarFechaActual(archivoUltimaFecha);
+
+                
                 JDialog dialog = new JDialog(); 
                 dialog.setTitle("Reto Diario");
                 dialog.setModal(true); 
@@ -298,7 +324,6 @@ public class VentanaPrincipal extends JFrame {
                 lblVida2.setIcon(new ImageIcon(imgVida));
                 lblVida3.setIcon(new ImageIcon(imgVida));
 
-                
                 Map<String, String> datos = null;
                 try {
                     datos = Pais.cargarPaises("/facil.csv");
@@ -307,21 +332,18 @@ public class VentanaPrincipal extends JFrame {
                     return;
                 }
 
-                
                 List<String> nombresPaises = new ArrayList<>(datos.keySet());
                 Collections.shuffle(nombresPaises);
 
                 String paisCorrecto = nombresPaises.get(0); 
                 String rutaImagen = datos.get(paisCorrecto);
 
-                
                 if (rutaImagen != null) {
                     ImageIcon icon = new ImageIcon(getClass().getResource("/" + rutaImagen));
                     Image img = icon.getImage().getScaledInstance(150, 100, Image.SCALE_SMOOTH);
                     lblBandera.setIcon(new ImageIcon(img));
                 }
 
-                
                 panel2.add(lblVida1);
                 panel2.add(lblVida2);
                 panel2.add(lblVida3);
@@ -333,7 +355,6 @@ public class VentanaPrincipal extends JFrame {
 
                 dialog.add(panel, BorderLayout.CENTER);
 
-                
                 btnIntento.addActionListener(new ActionListener() {
                     private int contadorVidas = 3;
 
@@ -349,44 +370,95 @@ public class VentanaPrincipal extends JFrame {
                                 "Éxito",
                                 JOptionPane.INFORMATION_MESSAGE
                             );
+                            dialog.dispose(); 
                             int nuevoAciertos = user.getAciertos()+1;
                             user.setAciertos(nuevoAciertos);
                             dao.actualizarAciertosYFallos(user);
                             dialog.dispose(); 
-                            
                         } else {
                             contadorVidas--;
                             if (contadorVidas == 2) {
-                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                lblVida1.setIcon(new ImageIcon(imgVida));
+                                lblVida1.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"))
+                                        .getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
                             } else if (contadorVidas == 1) {
-                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                lblVida2.setIcon(new ImageIcon(imgVida));
+                                lblVida2.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"))
+                                        .getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
                             } else if (contadorVidas == 0) {
-                            	ImageIcon iconVida = new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"));
-                                Image imgVida = iconVida.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
-                                lblVida3.setIcon(new ImageIcon(imgVida));
+                                lblVida3.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/corazonVidaPerdida.png"))
+                                        .getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
                                 JOptionPane.showMessageDialog(
                                     dialog,
                                     "Has perdido. El país correcto era: " + paisCorrecto,
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE
                                 );
+                                dialog.dispose(); 
                                 int nuevoFallos = user.getFallos()+1;
                                 user.setFallos(nuevoFallos);
                                 dao.actualizarAciertosYFallos(user);
-                                dialog.dispose(); 
-                               
+                                dialog.dispose();
                             }
                         }
                     }
                 });
 
-                
                 dialog.setLocationRelativeTo(null); 
                 dialog.setVisible(true); 
+            }
+
+            private boolean puedeJugar(String archivo) {
+                try {
+                    if (!Files.exists(Paths.get(archivo))) {
+                        return true; 
+                    }
+
+                    List<String> lineas = Files.readAllLines(Paths.get(archivo));
+                    for (String linea : lineas) {
+                        String[] partes = linea.split(";");
+                        if (partes.length == 2) {
+                            String nombreArchivo = partes[0].trim();
+                            String fechaArchivo = partes[1].trim();
+
+                            if (nombreArchivo.equals(user.getUsuario())) {
+                                LocalDateTime ultimaFecha = LocalDateTime.parse(fechaArchivo, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                                return ChronoUnit.HOURS.between(ultimaFecha, LocalDateTime.now()) >= 24;
+                            }
+                        }
+                    }
+                    return true; 
+                } catch (IOException | DateTimeParseException ex) {
+                    ex.printStackTrace();
+                    return true; 
+                }
+            }
+
+            private void guardarFechaActual(String archivo) {
+                try {
+                    List<String> lineas = Files.exists(Paths.get(archivo))
+                        ? Files.readAllLines(Paths.get(archivo))
+                        : new ArrayList<>();
+
+                    boolean encontrado = false;
+                    for (int i = 0; i < lineas.size(); i++) {
+                        String[] partes = lineas.get(i).split(";");
+                        if (partes.length == 2 && partes[0].trim().equals(user.getUsuario())) {
+                            
+                            lineas.set(i, user.getUsuario() + ";" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (!encontrado) {
+                        
+                        lineas.add(user.getUsuario() + ";" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                    }
+
+                    
+                    Files.write(Paths.get(archivo), lineas);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
