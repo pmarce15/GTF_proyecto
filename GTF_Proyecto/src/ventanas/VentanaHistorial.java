@@ -32,7 +32,6 @@ public class VentanaHistorial extends JFrame {
 
     private JTable tablaPartidas;
     private DefaultTableModel modeloPartidas;
-    private static String usuarioAutenticado = "";
 
     public VentanaHistorial(Usuarios user) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +71,7 @@ public class VentanaHistorial extends JFrame {
             }
         });
 
-        JLabel lblBienvenida = new JLabel("Bienvenido, " + usuarioAutenticado);
+        JLabel lblBienvenida = new JLabel("Bienvenido, " + user.getUsuario().toString());
         lblBienvenida.setFont(new Font("Arial", Font.BOLD, 18));
         lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
         lblBienvenida.setForeground(Color.BLACK);
@@ -143,7 +142,5 @@ public class VentanaHistorial extends JFrame {
         }
     }
 
-    public static void setUsuarioAutenticado(String usuario) {
-        usuarioAutenticado = usuario;
-    }
+
 }

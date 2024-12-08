@@ -42,7 +42,7 @@ public class daoUsuario {
 		}
 	}
 	
-	  public boolean comprobarUsuario(Usuarios user) {       ////////////////////////////COMENTADO EN CLASE (HUGO)
+	  public boolean comprobarUsuario(Usuarios user) {      
 		  String sql = "SELECT contrasenya FROM usuarios WHERE usuario = ?";
 
 	        try (Connection connection = cx.conectar()) { 
@@ -66,28 +66,67 @@ public class daoUsuario {
 	        }
 	    }
 	  
-	  public boolean actualizarUsuario (String usuario, String nuevoNombre){
-		  PreparedStatement ps = null;
-		  
-		  try {
-			ps = cx.conectar().prepareStatement("UPDATE usuarios SET usuario = ? WHERE usuario = ?");
-			ps.setString(1, nuevoNombre);
-			ps.setString(2, usuario);
-			
-			int rowsAffected = ps.executeUpdate();
-			cx.desconectar();
-			
-			return rowsAffected > 0; // si se actualiza al menos una fila, devuelve true
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+	  public boolean comprobarContrasena(Usuarios user) {
+		    String sql = "SELECT contrasenya FROM usuarios WHERE usuario = ?";
+
+		    try (Connection connection = cx.conectar()) {
+		        if (connection == null) {
+		            System.out.println("Error: No se pudo conectar a la base de datos.");
+		            return false;
+		        }
+
+		        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+		            ps.setString(1, user.getUsuario());  
+		            ResultSet rs = ps.executeQuery();
+		            if (rs.next()) {
+		                String contrasenaBD = rs.getString("contrasenya");
+		                return contrasenaBD.equals(user.getContrasenya());  
+		            }
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("Error al acceder a la base de datos: " + e.getMessage());
+		    }
+		    return false;
 		}
-	  }
+	   
+	  
+	  
+	  public boolean actualizarUsuario(String usuarioAntiguo, String nuevoNombre) {
+		    PreparedStatement ps = null;
+
+		    try (Connection connection = cx.conectar()) { //////////// CITAR COMO IAG
+		        if (connection == null) {
+		            System.out.println("Error: No se pudo conectar a la base de datos.");
+		            return false;
+		        }
+
+		        String verificarSQL = "SELECT usuario FROM usuarios WHERE usuario = ?";
+		        try (PreparedStatement psVerificar = connection.prepareStatement(verificarSQL)) {
+		            psVerificar.setString(1, nuevoNombre);
+		            ResultSet rs = psVerificar.executeQuery();
+		            if (rs.next()) {
+		                System.out.println("Error: El nombre de usuario ya está en uso.");
+		                return false; 
+		            }
+		        }
+
+		        String updateSQL = "UPDATE usuarios SET usuario = ? WHERE usuario = ?";
+		        try (PreparedStatement psActualizar = connection.prepareStatement(updateSQL)) {
+		            psActualizar.setString(1, nuevoNombre);
+		            psActualizar.setString(2, usuarioAntiguo);
+
+		            int rowsAffected = psActualizar.executeUpdate();
+		            return rowsAffected > 0;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
+		}
+
 	  
 	  public boolean actualizarContrasena(String usuario, String nuevaContrasena) {
-		    PreparedStatement ps = null;
+		    PreparedStatement ps = null;										///////PASARLE USER USUARIO DESPUES DE CAMBIARLO EN AJUSTES 
 
 		    try {
 		        ps = cx.conectar().prepareStatement("UPDATE usuarios SET contrasenya = ? WHERE usuario = ?");
@@ -214,6 +253,5 @@ public class daoUsuario {
 	        }
 	        
 	    }
-
 		
 	}

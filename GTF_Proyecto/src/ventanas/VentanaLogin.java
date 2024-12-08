@@ -26,7 +26,6 @@ public class VentanaLogin extends JFrame {
 	
     private JPanel contentPane;
     daoUsuario dao = new daoUsuario();
-    private String usuarioAutenticado;
     
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

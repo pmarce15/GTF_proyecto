@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conexion {
 	Connection cx=null;
 
-	public Connection conectar() {////////////////////////////COMENTADO EN CLASE (HUGO)
+	public Connection conectar() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			cx= DriverManager.getConnection("jdbc:sqlite:sistema.db");      

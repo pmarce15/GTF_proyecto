@@ -35,12 +35,10 @@ public class VentanaAjustes extends JFrame {
 	private JButton btnCambiarUsuario;
 	private JButton btnCambiarContra;
 	private daoUsuario usuarioDao;
-	String usuarioAutenticado;
 
 	
-	public VentanaAjustes(Usuarios user) {   ///(String usuarioAutenticado)
-		//this.usuarioAutenticado = usuarioAutenticado;
-		
+	public VentanaAjustes(Usuarios user) {   
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
@@ -124,15 +122,14 @@ public class VentanaAjustes extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String nuevoNombre = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce nuevo nombre de usuario.");
+				String nuevoNombre = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce tu nuevo nombre de usuario.");
 				
 				if(nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
-					 //////!!!
-					boolean exito = usuarioDao.actualizarUsuario(usuarioAutenticado, nuevoNombre);
+					boolean exito = usuarioDao.actualizarUsuario(user.getUsuario(), nuevoNombre);
 					
 					if(exito) {
+						user.setUsuario(nuevoNombre);
 						JOptionPane.showMessageDialog(VentanaAjustes.this, "Nombre de usuario actualizado correctamente");
-						usuarioAutenticado = nuevoNombre;//*****
 					}else {
 						JOptionPane.showMessageDialog(VentanaAjustes.this, "Error al actualizar el nombre de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -142,26 +139,23 @@ public class VentanaAjustes extends JFrame {
 			}
 		});
         
+        
         btnCambiarContra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String contrasenaActual = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce tu contraseña actual.");
+                String contrasenaActual = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce tu contraseña actual:");
 
                 if (contrasenaActual != null && !contrasenaActual.trim().isEmpty()) {
-                    Usuarios usuario = new Usuarios();
-                    usuario.setUsuario(usuarioAutenticado);
-                    usuario.setContrasenya(contrasenaActual);
-
-                    boolean esCorrecta = usuarioDao.comprobarUsuario(usuario);
+                    boolean esCorrecta = usuarioDao.comprobarContrasena(user);
 
                     if (esCorrecta) {
-                        String nuevaContrasena = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce la nueva contraseña.");
+                        String nuevaContrasena = JOptionPane.showInputDialog(VentanaAjustes.this, "Introduce la nueva contraseña:");
 
                         if (nuevaContrasena != null && !nuevaContrasena.trim().isEmpty()) {
-                            boolean exito = usuarioDao.actualizarContrasena(usuarioAutenticado, nuevaContrasena);
+                            boolean exito = usuarioDao.actualizarContrasena(user.getUsuario(), nuevaContrasena);
 
                             if (exito) {
-                                JOptionPane.showMessageDialog(VentanaAjustes.this, "Contraseña actualizada correctamente");
+                                JOptionPane.showMessageDialog(VentanaAjustes.this, "Contraseña actualizada correctamente.");
                             } else {
                                 JOptionPane.showMessageDialog(VentanaAjustes.this, "Error al actualizar la contraseña.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -178,11 +172,8 @@ public class VentanaAjustes extends JFrame {
         });
 
 
+
 	}	
-	
-	public void setUsuarioAutenticado(String usuario) {
-	    this.usuarioAutenticado = usuario;
-	}
 	
 	public class BackgroundPanel extends JPanel {
 		private Image backgroundImage;
