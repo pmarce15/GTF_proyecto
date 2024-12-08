@@ -46,10 +46,19 @@ public class VentanaJuego extends JFrame {
     private JButton[] botones = new JButton[3];
     private String paisCorrecto; 
     private int puntuacion= 0;
+    private String modoJuego;
+    private String dificultad;
     private Set<String> paisesMostrados = new HashSet<>();
     daoUsuario dao = new daoUsuario();
 
     public VentanaJuego(String dificultad, String modo, Usuarios user) {
+    	
+    	this.modoJuego = modo;
+    	this.dificultad = dificultad;
+    	
+    	user.setDificultad(dificultad);
+    	user.setModoJuego(modo);
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
@@ -210,11 +219,31 @@ public class VentanaJuego extends JFrame {
                        JOptionPane.INFORMATION_MESSAGE
                    );
                
-               int nuevaPuntuacion= user.getPuntuacion()+puntuacion;
+               int nuevaPuntuacion= puntuacion; 
                user.setPuntuacion(nuevaPuntuacion);
                dao.actualizarPuntuacion(user);
-               VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
-               ventanaPrincipal.setVisible(true);
+               dao.agregarPartidaAlHistorial(user, nuevaPuntuacion, dificultad, modo);
+               
+               int opcion = JOptionPane.showOptionDialog(
+                       null,
+                       "¿A dónde quieres ir?",
+                       "Opciones",
+                       JOptionPane.YES_NO_OPTION,
+                       JOptionPane.QUESTION_MESSAGE,
+                       null,
+                       new Object[] {"Ir a Ventana Principal", "Ir a Historial"},
+                       "Ir a Ventana Principal"
+               );
+
+               if (opcion == JOptionPane.YES_OPTION) {
+                   VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
+                   ventanaPrincipal.setVisible(true);
+               }
+               else if (opcion == JOptionPane.NO_OPTION) {
+            	   VentanaHistorial ventanaHistorial = new VentanaHistorial(user, user.getDificultad(), user.getModoJuego(), nuevaPuntuacion, true);
+                   ventanaHistorial.setVisible(true);
+               }
+
                dispose(); 
                
            } catch (InterruptedException e) {

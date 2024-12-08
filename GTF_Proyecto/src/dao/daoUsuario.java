@@ -1,10 +1,15 @@
 package dao;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import conexion.Conexion;
 import modelo.Usuarios;
@@ -253,5 +258,26 @@ public class daoUsuario {
 	        }
 	        
 	    }
+	  
+	  public void agregarPartidaAlHistorial(Usuarios user, int puntuacionPartida, String dificultad, String modo) {
+		    String archivoHistorial = "historial_partidas_" + user.getUsuario() + ".txt";
+		    
+		    String registro = String.format(
+		        "Fecha: %s, Usuario: %s, Dificultad: %s, Modo: %s, Puntuación: %d",
+		        LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+		        user.getUsuario(),
+		        dificultad,
+		        modo,
+		        puntuacionPartida
+		    );
+
+		    try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoHistorial, true))) {
+		        writer.write(registro);
+		        writer.newLine();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		}
+
 		
 	}

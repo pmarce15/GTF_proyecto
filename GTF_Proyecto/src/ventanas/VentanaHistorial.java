@@ -11,6 +11,14 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,8 +40,25 @@ public class VentanaHistorial extends JFrame {
 
     private JTable tablaPartidas;
     private DefaultTableModel modeloPartidas;
+    
+    private Usuarios user;
+    private String dificultad;
+    private String modoJuego;
+    private int puntuacion;
+    
+   
+    public VentanaHistorial(Usuarios user, String modoJuego, String dificultad, int puntuacion, boolean registrarPartida) {
+    	this.user = user;
+    	this.dificultad = dificultad;
+        this.modoJuego = modoJuego;
+        this.puntuacion = puntuacion;
 
-    public VentanaHistorial(Usuarios user) {
+        
+        System.out.println("Usuario: " + user.getUsuario());
+        System.out.println("Dificultad: " + dificultad);
+        System.out.println("Modo de Juego: " + modoJuego);
+        System.out.println("Puntuación: " + puntuacion);
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 600, 400);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
@@ -58,7 +83,6 @@ public class VentanaHistorial extends JFrame {
         gbcButton.gridx = 0;
         gbcButton.gridy = 0;
         gbcButton.anchor = GridBagConstraints.NORTHWEST;
-
         botonAtras = new JButton("Atrás"); 
         backgroundPanel.add(botonAtras, gbcButton);
 
@@ -96,6 +120,10 @@ public class VentanaHistorial extends JFrame {
         backgroundPanel.add(contentPane1, gbcContentPane);
 
         crearTablaPartidas();
+        cargarHistorial();
+        if (registrarPartida) {
+            agregarPartida(modoJuego, dificultad, puntuacion);
+        }        
         JScrollPane scrollPane = new JScrollPane(tablaPartidas);
         GridBagConstraints gbcTable = new GridBagConstraints();
         gbcTable.gridx = 0;
@@ -105,6 +133,7 @@ public class VentanaHistorial extends JFrame {
         gbcTable.fill = GridBagConstraints.BOTH;
         gbcTable.insets = new Insets(10, 10, 10, 10);
         contentPane1.add(scrollPane, gbcTable);
+        
     }
 
     private void crearTablaPartidas() {
@@ -115,18 +144,47 @@ public class VentanaHistorial extends JFrame {
             }
         };
 
+        modeloPartidas.addColumn("Fecha");
         modeloPartidas.addColumn("Modo de Juego");
         modeloPartidas.addColumn("Dificultad");
         modeloPartidas.addColumn("Puntuación");
 
-        // Datos ejemplo
-//        modeloPartidas.addRow(new Object[]{"Clásico", "Fácil", 150});
-//        modeloPartidas.addRow(new Object[]{"Supervivencia", "Difícil", 300});
-
         tablaPartidas = new JTable(modeloPartidas);
         tablaPartidas.setRowHeight(30);
         tablaPartidas.getTableHeader().setReorderingAllowed(false);
+        
     }
+    
+
+    private void cargarHistorial() {/////IAG
+        modeloPartidas.setRowCount(0); 
+        try {
+            List<String> lineas = Files.readAllLines(Paths.get("historial_partidas_" + user.getUsuario() + ".txt"));
+            for (String linea : lineas) {
+                String[] datos = linea.split(";");
+                if (datos.length == 4) {
+                    modeloPartidas.addRow(datos); 
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void agregarPartida(String modoJuego, String dificultad, int puntuacion) {
+        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        String[] nuevaPartida = {fecha, modoJuego, dificultad, String.valueOf(puntuacion)};
+        modeloPartidas.addRow(nuevaPartida);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("historial_partidas_" + user.getUsuario() + ".txt", true))) {
+            writer.write(String.join(";", nuevaPartida));
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public class BackgroundPanel extends JPanel {
         private Image backgroundImage;

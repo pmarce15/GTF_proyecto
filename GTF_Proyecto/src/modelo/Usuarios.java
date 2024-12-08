@@ -7,8 +7,18 @@ public class Usuarios {
 	int aciertos;
 	int fallos;
 	
+	private String dificultad;
+	private String modoJuego;
+	
 	public Usuarios() {
 		
+	}
+
+	public Usuarios(String usuario, int puntuacion, String dificultad, String modoJuego) {
+		this.usuario = usuario;
+        this.puntuacion = puntuacion;
+        this.dificultad = dificultad;
+        this.modoJuego = modoJuego;
 	}
 	
 	public Usuarios(String usuario, int puntuacion) {
@@ -62,6 +72,22 @@ public class Usuarios {
 
 	public void setFallos(int fallos) {
 		this.fallos = fallos;
+	}
+	
+	public String getDificultad() {
+		return dificultad;
+	}
+
+	public void setDificultad(String dificultad) {
+		this.dificultad = dificultad;
+	}
+
+	public String getModoJuego() {
+		return modoJuego;
+	}
+
+	public void setModoJuego(String modoJuego) {
+		this.modoJuego = modoJuego;
 	}
 	
 	

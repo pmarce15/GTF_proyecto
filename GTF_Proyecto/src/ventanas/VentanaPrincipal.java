@@ -40,8 +40,15 @@ public class VentanaPrincipal extends JFrame {
     private JButton btnRetoDiario;
     private JButton btnEstadisticasRetoDiario;
     daoUsuario dao = new daoUsuario();
+    private Usuarios user;
     
     public VentanaPrincipal(Usuarios user) {
+    	this.user = user;
+    	String dificultad = user.getDificultad();
+        String modoJuego = user.getModoJuego();
+        System.out.println("Modo de Juego: " + modoJuego);
+        System.out.println("Dificultad: " + dificultad);
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setIconImage(Toolkit.getDefaultToolkit().getImage(principal.main.class.getResource("/imagenes/logoGTF.jpg")));
@@ -263,7 +270,7 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				VentanaHistorial ventanaHistorial = new VentanaHistorial(user);
+				VentanaHistorial ventanaHistorial = new VentanaHistorial(user, user.getModoJuego(), user.getDificultad(), user.getPuntuacion(),false);
 				ventanaHistorial.setVisible(true);
 				dispose();				
 			}
@@ -375,6 +382,8 @@ public class VentanaPrincipal extends JFrame {
                             user.setAciertos(nuevoAciertos);
                             dao.actualizarAciertosYFallos(user);
                             dialog.dispose(); 
+//                            VentanaHistorial ventanaHistorial = new VentanaHistorial(user, modoJuego, dificultad, nuevoAciertos);
+//                            ventanaHistorial.setVisible(true);
                         } else {
                             contadorVidas--;
                             if (contadorVidas == 2) {
@@ -397,6 +406,9 @@ public class VentanaPrincipal extends JFrame {
                                 user.setFallos(nuevoFallos);
                                 dao.actualizarAciertosYFallos(user);
                                 dialog.dispose();
+                                
+//                                VentanaHistorial ventanaHistorial = new VentanaHistorial(user, modo, dificultad, 0); // 0 en caso de fallos
+//                                ventanaHistorial.setVisible(true);
                             }
                         }
                     }
