@@ -236,6 +236,8 @@ public class VentanaJuego extends JFrame {
                );
 
                if (opcion == JOptionPane.YES_OPTION) {
+                   VentanaHistorial vhFake = new VentanaHistorial(user, user.getModoJuego(), user.getDificultad(), nuevaPuntuacion, true);
+                   vhFake.dispose();
                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
                    ventanaPrincipal.setVisible(true);
                }

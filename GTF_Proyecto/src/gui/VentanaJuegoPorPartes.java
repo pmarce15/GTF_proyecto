@@ -200,11 +200,11 @@ public class VentanaJuegoPorPartes extends JFrame {
 
     private void finalizarJuego(Usuarios user) {
         if (user != null) {
-            int nuevaPuntuacion = user.getPuntuacion() + puntuacion;
+            int nuevaPuntuacion = puntuacion;
             user.setPuntuacion(nuevaPuntuacion);
 
             dao.actualizarPuntuacion(user);
-            dao.agregarPartidaAlHistorial(user, puntuacion, dificultad, modoJuego);
+            dao.agregarPartidaAlHistorial(user, nuevaPuntuacion, dificultad, modoJuego);
         }
 
         JOptionPane.showMessageDialog(
@@ -226,6 +226,8 @@ public class VentanaJuegoPorPartes extends JFrame {
         );
 
         if (opcion == JOptionPane.YES_OPTION) {
+        	VentanaHistorial vhFake = new VentanaHistorial(user, user.getModoJuego(), user.getDificultad(), puntuacion, true);
+            vhFake.dispose();
             VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(user);
             ventanaPrincipal.setVisible(true);
         } else if (opcion == JOptionPane.NO_OPTION) {

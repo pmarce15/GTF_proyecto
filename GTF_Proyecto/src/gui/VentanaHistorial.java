@@ -37,6 +37,7 @@ public class VentanaHistorial extends JFrame {
     private BackgroundPanel backgroundPanel;
     private JPanel contentPane1;
     private JButton botonAtras;
+    private JButton botonOrdenar;
 
     private JTable tablaPartidas;
     private DefaultTableModel modeloPartidas;
@@ -94,6 +95,24 @@ public class VentanaHistorial extends JFrame {
                 dispose();
             }
         });
+        
+        
+        GridBagConstraints gbcOrdenar = new GridBagConstraints();
+        gbcOrdenar.fill = GridBagConstraints.NONE;
+        gbcOrdenar.insets = new Insets(10, 100, 10, 10); 
+        gbcOrdenar.gridx = 0; 
+        gbcOrdenar.gridy = 0; 
+        gbcOrdenar.anchor = GridBagConstraints.NORTHWEST; 
+        botonOrdenar = new JButton("Ordenar por Puntuación");
+        botonOrdenar.setPreferredSize(botonAtras.getPreferredSize()); // Igual tamaño al botón "Atrás"
+        backgroundPanel.add(botonOrdenar, gbcOrdenar);
+
+        botonOrdenar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ordenarTabla(3, false); 
+            }
+        });
 
         JLabel lblBienvenida = new JLabel("Bienvenido, " + user.getUsuario().toString());
         lblBienvenida.setFont(new Font("Arial", Font.BOLD, 18));
@@ -134,6 +153,7 @@ public class VentanaHistorial extends JFrame {
         gbcTable.insets = new Insets(10, 10, 10, 10);
         contentPane1.add(scrollPane, gbcTable);
         
+               
     }
 
     private void crearTablaPartidas() {
@@ -145,8 +165,8 @@ public class VentanaHistorial extends JFrame {
         };
 
         modeloPartidas.addColumn("Fecha");
-        modeloPartidas.addColumn("Modo de Juego");
         modeloPartidas.addColumn("Dificultad");
+        modeloPartidas.addColumn("Modo de Juego");
         modeloPartidas.addColumn("Puntuación");
 
         tablaPartidas = new JTable(modeloPartidas);
@@ -184,6 +204,74 @@ public class VentanaHistorial extends JFrame {
             e.printStackTrace();
         }
     }
+    
+    private void ordenarTabla(int columna, boolean ascendente) {//IAG////////////////////////////////////////////////////
+        int filas = modeloPartidas.getRowCount();
+        String[][] datos = new String[filas][modeloPartidas.getColumnCount()];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < modeloPartidas.getColumnCount(); j++) {
+                datos[i][j] = modeloPartidas.getValueAt(i, j).toString();
+            }
+        }
+        datos = mergeSort(datos, columna, ascendente);
+
+        modeloPartidas.setRowCount(0);
+        for (String[] fila : datos) {
+            modeloPartidas.addRow(fila);
+        }
+    }
+
+    private String[][] mergeSort(String[][] datos, int columna, boolean ascendente) {
+        if (datos.length <= 1) {
+            return datos; // Caso base: la lista está ordenada si tiene 1 o menos elementos.
+        }
+
+        int mid = datos.length / 2;
+
+        String[][] izquierda = new String[mid][datos[0].length];
+        String[][] derecha = new String[datos.length - mid][datos[0].length];
+
+        System.arraycopy(datos, 0, izquierda, 0, mid);
+        System.arraycopy(datos, mid, derecha, 0, datos.length - mid);
+
+        izquierda = mergeSort(izquierda, columna, ascendente);
+        derecha = mergeSort(derecha, columna, ascendente);
+
+        return merge(izquierda, derecha, columna, ascendente);
+    }
+
+    private String[][] merge(String[][] izquierda, String[][] derecha, int columna, boolean ascendente) {
+        String[][] resultado = new String[izquierda.length + derecha.length][izquierda[0].length];
+        int i = 0, j = 0, k = 0;
+
+        while (i < izquierda.length && j < derecha.length) {
+            int comparacion;
+            try {
+                double numIzq = Double.parseDouble(izquierda[i][columna]);
+                double numDer = Double.parseDouble(derecha[j][columna]);
+                comparacion = Double.compare(numIzq, numDer);
+            } catch (NumberFormatException e) {
+                comparacion = izquierda[i][columna].compareTo(derecha[j][columna]);
+            }
+
+            if ((ascendente && comparacion <= 0) || (!ascendente && comparacion > 0)) {
+                resultado[k++] = izquierda[i++];
+            } else {
+                resultado[k++] = derecha[j++];
+            }
+        }
+
+        while (i < izquierda.length) {
+            resultado[k++] = izquierda[i++];
+        }
+        while (j < derecha.length) {
+            resultado[k++] = derecha[j++];
+        }
+
+        return resultado;///////////////////////////////////////////////////////////////////IAG
+    }
+
 
 
     public class BackgroundPanel extends JPanel {
