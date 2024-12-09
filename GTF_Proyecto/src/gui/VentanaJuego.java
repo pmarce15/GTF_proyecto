@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,9 +31,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import clases.Pais;
-import dao.daoUsuario;
-import modelo.Usuarios;
+import db.daoUsuario;
+import domain.Pais;
+import domain.Usuarios;
 
 public class VentanaJuego extends JFrame {
     private BackgroundPanel backgroundPanel;

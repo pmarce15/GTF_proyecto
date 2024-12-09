@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,9 +32,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import clases.Pais;
-import dao.daoUsuario;
-import modelo.Usuarios;
+import db.daoUsuario;
+import domain.Pais;
+import domain.Usuarios;
 
 public class VentanaJuegoPorPartes extends JFrame {
     private JLabel lblBanderas;

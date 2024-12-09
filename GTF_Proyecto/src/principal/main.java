@@ -1,6 +1,6 @@
 package principal;
 
-import clases.Pais;
+import domain.Pais;
 
 public class main {
 

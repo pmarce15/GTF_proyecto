@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,8 +15,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import clases.Pais;
-import modelo.Usuarios;
+import domain.Pais;
+import domain.Usuarios;
 
 public class VentanaBiblioteca extends JFrame {
     private static final long serialVersionUID = 1L;

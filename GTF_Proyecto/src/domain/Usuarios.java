@@ -1,4 +1,4 @@
-package modelo;
+package domain;
 
 public class Usuarios {
 	String usuario;

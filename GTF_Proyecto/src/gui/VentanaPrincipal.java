@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,9 +20,9 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import clases.Pais;
-import dao.daoUsuario;
-import modelo.Usuarios;
+import db.daoUsuario;
+import domain.Pais;
+import domain.Usuarios;
 
 public class VentanaPrincipal extends JFrame {
     private Image backgroundImage;
@@ -482,6 +482,94 @@ public class VentanaPrincipal extends JFrame {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+            }
+        });
+        btnEstadisticasRetoDiario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Estadísticas del Reto Diario");
+                dialog.setModal(true);
+                dialog.setSize(300, 300); 
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+                
+                JPanel panelFondo = new JPanel() {
+                	
+                        @Override
+                        protected void paintComponent(Graphics g) {
+                            super.paintComponent(g);
+                            ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/Fondo.jpg"));
+                            g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                        }
+                    };
+
+                panelFondo.setLayout(new GridBagLayout()); 
+
+                
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10); 
+                gbc.fill = GridBagConstraints.HORIZONTAL; 
+
+                
+                JLabel lblTitulo = new JLabel("Estadísticas de " + user.getUsuario(), SwingConstants.CENTER);
+                lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+                
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.gridwidth = 3; 
+                panelFondo.add(lblTitulo, gbc);
+
+                
+                int jugadas = user.getAciertos() + user.getFallos();
+                int aciertos = user.getAciertos();
+                int fallos = user.getFallos();
+
+                String[] titulos = { "JUGADAS", "ACIERTOS", "FALLOS" };
+                String[] valores = { String.valueOf(jugadas), String.valueOf(aciertos), String.valueOf(fallos) };
+
+                
+                for (int i = 0; i < titulos.length; i++) {
+                    JLabel lblTituloSuperior = new JLabel(titulos[i], SwingConstants.CENTER);
+                    lblTituloSuperior.setFont(new Font("Arial", Font.BOLD, 14));
+                    
+
+                    gbc.gridx = i;
+                    gbc.gridy = 1;
+                    gbc.gridwidth = 1;
+                    panelFondo.add(lblTituloSuperior, gbc);
+
+                    JLabel lblValorSuperior = new JLabel(valores[i], SwingConstants.CENTER);
+                    lblValorSuperior.setFont(new Font("Arial", Font.BOLD, 18));
+                    
+
+                    gbc.gridy = 2;
+                    panelFondo.add(lblValorSuperior, gbc);
+
+                   
+                    if (i == 1) { 
+                        gbc.gridy = 3;
+                        int porcentajeAciertos = jugadas > 0 ? (aciertos * 100) / jugadas : 0;
+
+                        JProgressBar barraProgreso = new JProgressBar(0, 100);
+                        barraProgreso.setValue(porcentajeAciertos);
+                        barraProgreso.setString(porcentajeAciertos + "%");
+                        barraProgreso.setStringPainted(true);
+
+                       
+                        barraProgreso.setForeground(Color.GREEN);
+                        barraProgreso.setBackground(Color.GRAY);
+
+                        panelFondo.add(barraProgreso, gbc);
+                    }
+                }
+
+                
+                dialog.setContentPane(panelFondo);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
             }
         });
     }

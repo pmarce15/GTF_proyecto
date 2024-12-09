@@ -1,4 +1,4 @@
-package dao;
+package db;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,8 +11,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import conexion.Conexion;
-import modelo.Usuarios;
+import domain.Usuarios;
 
 public class daoUsuario {
 	Conexion cx;

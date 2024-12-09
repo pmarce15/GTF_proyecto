@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,10 +21,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import clases.Pais;
-import dao.daoUsuario;
-import modelo.Usuarios;
-import ventanas.VentanaHistorial.BackgroundPanel;
+import db.daoUsuario;
+import domain.Pais;
+import domain.Usuarios;
+import gui.VentanaHistorial.BackgroundPanel;
 
 public class VentanaAjustes extends JFrame {
 	

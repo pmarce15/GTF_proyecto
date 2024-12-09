@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,7 +30,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import modelo.Usuarios;
+import domain.Usuarios;
 
 public class VentanaHistorial extends JFrame {
 

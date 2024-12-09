@@ -1,0 +1,6 @@
+Fecha: 09/12/2024 13:31, Usuario: pablo, Dificultad: Facil, Modo: Normal, Puntuación: 210
+09/12/2024 13:31;Facil;Normal;210
+Fecha: 09/12/2024 13:32, Usuario: pablo, Dificultad: Facil, Modo: Por partes, Puntuación: 0
+Fecha: 09/12/2024 13:32, Usuario: pablo, Dificultad: Facil, Modo: Escrito, Puntuación: 0
+09/12/2024 13:32;Facil;Escrito;0
+Fecha: 09/12/2024 13:32, Usuario: pablo, Dificultad: Facil, Modo: Escrito, Puntuación: 0
