@@ -74,8 +74,12 @@ public class VentanaLogin extends JFrame {
         };
         contentPane2.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane2.setLayout(new GridLayout(6, 1)); 
-
        
+        //IAG ChatGPT
+        //FILE: conversacionesGPT-opendeusto.txt
+		//SIN CAMBIOS
+
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;

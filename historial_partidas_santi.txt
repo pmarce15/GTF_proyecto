@@ -1,2 +1,6 @@
 Fecha: 09/12/2024 11:02, Usuario: santi, Dificultad: Facil, Modo: Escrito, Puntuación: 0
 09/12/2024 11:02;Facil;Escrito;0
+Fecha: 09/12/2024 19:02, Usuario: santi, Dificultad: Facil, Modo: Por partes, Puntuación: 0
+09/12/2024 19:03;Facil;Por partes;0
+Fecha: 09/12/2024 19:03, Usuario: santi, Dificultad: Facil, Modo: Escrito, Puntuación: 10
+09/12/2024 19:03;Facil;Escrito;10

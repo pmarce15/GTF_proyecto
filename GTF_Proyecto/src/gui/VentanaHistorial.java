@@ -175,8 +175,11 @@ public class VentanaHistorial extends JFrame {
         
     }
     
+    //IAG ChatGPT
+  	//FILE: conversacionesGPT-opendeusto.txt
 
-    private void cargarHistorial() {/////IAG
+    
+    private void cargarHistorial() {
         modeloPartidas.setRowCount(0); 
         try {
             List<String> lineas = Files.readAllLines(Paths.get("historial_partidas_" + user.getUsuario() + ".txt"));
@@ -191,7 +194,10 @@ public class VentanaHistorial extends JFrame {
         }
     }
 
+    //IAG ChatGPT
+  	//FILE: conversacionesGPT-opendeusto.txt
 
+    
     private void agregarPartida(String modoJuego, String dificultad, int puntuacion) {
         String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
         String[] nuevaPartida = {fecha, modoJuego, dificultad, String.valueOf(puntuacion)};
@@ -205,7 +211,11 @@ public class VentanaHistorial extends JFrame {
         }
     }
     
-    private void ordenarTabla(int columna, boolean ascendente) {//IAG////////////////////////////////////////////////////
+    //IAG ChatGPT
+    //File conversacionesGPT-opendeusto.txt
+    //SIN CAMBIOS 
+    
+    private void ordenarTabla(int columna, boolean ascendente) {
         int filas = modeloPartidas.getRowCount();
         String[][] datos = new String[filas][modeloPartidas.getColumnCount()];
 
@@ -221,10 +231,14 @@ public class VentanaHistorial extends JFrame {
             modeloPartidas.addRow(fila);
         }
     }
+    
+    //IAG ChatGPT
+    //File conversacionesGPT-opendeusto.txt
+    //SIN CAMBIOS 
 
     private String[][] mergeSort(String[][] datos, int columna, boolean ascendente) {
         if (datos.length <= 1) {
-            return datos; // Caso base: la lista está ordenada si tiene 1 o menos elementos.
+            return datos; 
         }
 
         int mid = datos.length / 2;
@@ -240,6 +254,10 @@ public class VentanaHistorial extends JFrame {
 
         return merge(izquierda, derecha, columna, ascendente);
     }
+    
+    //IAG ChatGPT
+    //File conversacionesGPT-opendeusto.txt
+    //SIN CAMBIOS 
 
     private String[][] merge(String[][] izquierda, String[][] derecha, int columna, boolean ascendente) {
         String[][] resultado = new String[izquierda.length + derecha.length][izquierda[0].length];
@@ -269,7 +287,7 @@ public class VentanaHistorial extends JFrame {
             resultado[k++] = derecha[j++];
         }
 
-        return resultado;///////////////////////////////////////////////////////////////////IAG
+        return resultado;
     }
 
 

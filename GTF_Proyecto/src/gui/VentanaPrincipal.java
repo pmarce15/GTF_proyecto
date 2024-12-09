@@ -429,6 +429,9 @@ public class VentanaPrincipal extends JFrame {
                 dialog.setVisible(true); 
             }
 
+            //IAG ChatGPT
+            //FILE: conversacionesGPT-opendeusto.txt
+            
             private boolean puedeJugar(String archivo) {
                 try {
                     if (!Files.exists(Paths.get(archivo))) {
@@ -455,6 +458,11 @@ public class VentanaPrincipal extends JFrame {
                 }
             }
 
+            //IAG ChatGPT
+            //FILE: conversacionesGPT-opendeusto.txt
+    		//SIN CAMBIOS
+
+            
             private void guardarFechaActual(String archivo) {
                 try {
                     List<String> lineas = Files.exists(Paths.get(archivo))

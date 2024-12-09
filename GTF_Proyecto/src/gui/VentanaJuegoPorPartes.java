@@ -86,10 +86,16 @@ public class VentanaJuegoPorPartes extends JFrame {
         lblBanderas.setBounds(75, 0, 300, 150);
         layeredPane.add(lblBanderas, JLayeredPane.DEFAULT_LAYER);
 
+        //IAG ChatGPT
+        //File conversacionesGPT-opendeusto.txt
+        //modificación de tamaños
+        
+
+        
         for (int i = 0; i < cubiertas.length; i++) {
             cubiertas[i] = new JLabel();
             cubiertas[i].setOpaque(true);
-            cubiertas[i].setBackground(Color.GRAY); 
+            cubiertas[i].setBackground(Color.RED); 
             cubiertas[i].setBounds(i * 100, 0, 100, 150); 
             layeredPane.add(cubiertas[i], JLayeredPane.PALETTE_LAYER);
         }
