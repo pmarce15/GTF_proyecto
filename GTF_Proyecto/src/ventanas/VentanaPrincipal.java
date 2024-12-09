@@ -183,7 +183,7 @@ public class VentanaPrincipal extends JFrame {
         String[] opciones = {"Facil", "Medio","Dificil"};
         JComboBox<String> comboBox = new JComboBox<>(opciones);
         
-        String[] opciones2 = {"Normal", "Por partes"};
+        String[] opciones2 = {"Normal","Escrito", "Por partes"};
         JComboBox<String> comboBox2 = new JComboBox<>(opciones2);
 
         comboBox.setPreferredSize(new Dimension(50, 25)); 
@@ -247,9 +247,20 @@ public class VentanaPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	String dificultad = (String) comboBox.getSelectedItem();
             	String modo = (String) comboBox2.getSelectedItem();
-            	VentanaJuego ventanaJuego = new VentanaJuego(dificultad,modo,user);
-            	ventanaJuego.setVisible(true);
-            	dispose();
+            	if (modo == "Normal") {
+            		VentanaJuego ventanaJuego = new VentanaJuego(dificultad,modo,user);
+                	ventanaJuego.setVisible(true);
+                	dispose();
+            	} else if (modo == "Escrito") {
+            		VentanaJuegoEscribir ventanaJuegoEscribir = new VentanaJuegoEscribir(dificultad,modo, user);
+                	ventanaJuegoEscribir.setVisible(true);
+                	dispose();
+            	} else {
+            		VentanaJuegoPorPartes ventanaJuegoPorPartes = new VentanaJuegoPorPartes(dificultad,modo, user);
+                	ventanaJuegoPorPartes.setVisible(true);
+                	dispose();
+            	}
+            	
             	
             }
         });
